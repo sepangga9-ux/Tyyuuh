@@ -25,15 +25,17 @@ jobs:
           # Tweak khusus agar Windows Server mau jalanin aplikasi OpenGL/DirectX tanpa GPU
           reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer" /v "Scaling" /t REG_DWORD /d 100 /f
 
-      - name: 👤 USER & RDP SETUP
+            - name: 👤 USER & RDP SETUP (REVISED)
         run: |
-          $pass = "GodMode1000!"
+          $pass = "P@ssw0rdGacor123!"
           $sPass = ConvertTo-SecureString $pass -AsPlainText -Force
+          # Hapus user lama jika ada
+          Remove-LocalUser -Name "ROBLOX-USER" -ErrorAction SilentlyContinue
+          # Buat user baru
           New-LocalUser -Name "ROBLOX-USER" -Password $sPass -AccountNeverExpires
           Add-LocalGroupMember -Group "Administrators" -Member "ROBLOX-USER"
           Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -Name "fDenyTSConnections" -Value 0
           Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -Name "UserAuthentication" -Value 0
-          echo "PASS=$pass" >> $env:GITHUB_ENV
 
       - name: 🌐 TAILSCALE TUNNEL
         env:
