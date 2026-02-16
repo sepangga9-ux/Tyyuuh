@@ -1,4 +1,4 @@
-name: 👑 RDP GOD MODE - TOTAL FIX 1000%
+name: 👑 RDP GOD MODE - FINAL ROBLOX FIX
 
 on:
   workflow_dispatch:
@@ -9,35 +9,34 @@ jobs:
     timeout-minutes: 1440 
 
     steps:
-      - name: 🛡️ SYSTEM TWEAK (PERFORMANCE MODE)
+      - name: 🛡️ SYSTEM TWEAK (PERFORMANCE)
         run: |
-          # Paksa Performa CPU ke Paling Tinggi
           powercfg /setactive 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c
-          # Optimasi Network biar gak lag di HP
           netsh int tcp set global autotuninglevel=normal
-          netsh int tcp set global rss=enabled
+          # Mengabaikan error service yang tidak diizinkan agar tetap jalan
+          $services = @('wuauserv','BITS')
+          foreach($s in $services){ Stop-Service -Name $s -Force -ErrorAction SilentlyContinue }
 
-      - name: 🎨 ZERO-LAG VISUAL (ROBLOX OPTIMIZED)
+      - name: 🎨 VISUAL OPTIMIZER
         run: |
-          # Mematikan semua animasi Windows agar RAM fokus ke Roblox
           reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects" /v VisualFXSetting /t REG_DWORD /d 2 /f
-          reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services" /v ColorDepth /t REG_DWORD /d 2 /f
+          reg add "HKLM\Software\Policies\Microsoft\Windows NT\Terminal Services" /v ColorDepth /t REG_DWORD /d 2 /f
 
-      - name: 👤 USER SETUP (FIX LOGIN)
+      - name: 👤 USER SETUP (FIX PASSWORD LENGTH)
         run: |
-          # PASSWORD BARU (Wajib ada Huruf Besar, Kecil, Angka, & Simbol)
-          $pass = "P@ssw0rdGacor123!"
-          $sPass = ConvertTo-SecureString $pass -AsPlainText -Force
+          # Password dipersingkat menjadi 12 karakter agar tidak error
+          $pass = "GacorLurr12!"
           
-          # Hapus user lama (jika ada) & buat yang baru
-          net user ROBLOX_USER "P@ssw0rdGacor123!" /add
-          net localgroup Administrators ROBLOX_USER /add
+          # Gunakan PowerShell murni untuk membuat user (lebih stabil dari perintah NET USER)
+          $SudoPass = ConvertTo-SecureString $pass -AsPlainText -Force
+          New-LocalUser -Name "ROBLOX_USER" -Password $SudoPass -AccountNeverExpires -Description "RDP User"
+          Add-LocalGroupMember -Group "Administrators" -Member "ROBLOX_USER"
           
           # Aktifkan Akses RDP
           Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -Name "fDenyTSConnections" -Value 0
           Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -Name "UserAuthentication" -Value 0
           
-          Write-Host "✅ User ROBLOX_USER berhasil dibuat!" -ForegroundColor Green
+          Write-Host "✅ User ROBLOX_USER Berhasil Dibuat!" -ForegroundColor Green
 
       - name: 🌐 TAILSCALE TUNNEL
         env:
@@ -49,31 +48,21 @@ jobs:
           $ip = & "C:\Program Files\Tailscale\tailscale.exe" ip -4
           echo "IP_FIX=$ip" >> $env:GITHUB_ENV
 
-      - name: 📦 ROBLOX STUDIO PRE-INSTALLER
+      - name: 📦 ROBLOX STUDIO DOWNLOADER
         run: |
-          # Download Installer Roblox Studio ke Desktop
           $Url = "https://setup.rbxcdn.com/RobloxStudioLauncherBeta.exe"
           Invoke-WebRequest -Uri $Url -OutFile "$env:USERPROFILE\Desktop\RobloxStudio.exe"
 
-      - name: 🔄 MONITORING & AUTO-RESTART
+      - name: 🔄 MONITORING 24/7
         env:
           MY_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           Write-Host "===================================="
-          Write-Host "🚀 RDP FIX 1000% READY!" -ForegroundColor Green
+          Write-Host "🚀 RDP FINAL FIX READY!" -ForegroundColor Green
           Write-Host "🌐 IP: $env:IP_FIX" -ForegroundColor Cyan
           Write-Host "👤 User: ROBLOX_USER" -ForegroundColor White
-          Write-Host "🔐 Pass: P@ssw0rdGacor123!" -ForegroundColor White
+          Write-Host "🔐 Pass: GacorLurr12!" -ForegroundColor White
           Write-Host "===================================="
           
           $endTime = (Get-Date).AddHours(23).AddMinutes(50)
-          $restartAt = $endTime.AddMinutes(-15)
-
-          while ((Get-Date) -lt $endTime) {
-              if ((Get-Date) -gt $restartAt -and $env:MY_TOKEN) {
-                  $url = "https://api.github.com/repos/${{ github.repository }}/actions/workflows/${{ github.workflow_id }}/dispatches"
-                  Invoke-RestMethod -Uri $url -Method Post -Headers @{"Authorization"="Bearer $env:MY_TOKEN"} -Body (@{ref="main"}|ConvertTo-Json) -ContentType "application/json"
-                  break
-              }
-              Start-Sleep -Seconds 60
-          }
+          while ((Get-Date) -lt $endTime) { Start-Sleep -Seconds 60 }
