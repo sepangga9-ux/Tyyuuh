@@ -1,4 +1,4 @@
-name: 🎮 RDP OPTIMIZED FOR ROBLOX STUDIO
+name: 🚀 RDP ULTRA LIGHT - MOBILE OPTIMIZED
 
 on:
   workflow_dispatch:
@@ -9,754 +9,315 @@ on:
         default: '5h50m'
         type: choice
         options:
-        - '3h'
+        - '1h'
+        - '3h' 
         - '5h50m'
         - '11h40m'
         - '23h20m'
-      performance_mode:
-        description: '⚡ Performance Mode'
-        required: false
-        default: 'roblox-optimized'
-        type: choice
-        options:
-        - 'roblox-optimized'
-        - 'balanced'
-        - 'ultra-performance'
 
 jobs:
-  Roblox-Studio-RDP:
+  Ultra-Light-RDP:
     runs-on: windows-latest
-    timeout-minutes: 1440
+    timeout-minutes: 360
     
     steps:
-      # BANNER
-      - name: 🎯 KHỞI ĐỘNG ROBLOX STUDIO RDP
+      # BANNER CHÀO MỪNG
+      - name: 🎯 KHỞI ĐỘNG HỆ THỐNG ULTRA LIGHT
         run: |
           Write-Host ""
-          Write-Host "═══════════════════════════════════════════" -ForegroundColor Cyan
-          Write-Host "   🎮 RDP OPTIMIZED FOR ROBLOX STUDIO" -ForegroundColor Yellow
-          Write-Host "═══════════════════════════════════════════" -ForegroundColor Cyan
-          Write-Host ""
-          Write-Host "⚙️  Performance: ${{ github.event.inputs.performance_mode }}" -ForegroundColor Green
-          Write-Host "⏰  Duration: ${{ github.event.inputs.duration }}" -ForegroundColor Magenta
-          Write-Host "🖥️  RAM: 7 GB | Storage: ~14 GB" -ForegroundColor White
-          Write-Host "🎨  Optimized for 3D Editing & Building" -ForegroundColor Cyan
+          Write-Host "📱 RDP ULTRA LIGHT - MOBILE OPTIMIZED" -ForegroundColor Cyan
+          Write-Host "⚡ Optimized for Low-End Phones" -ForegroundColor Green
+          Write-Host "🕒 Thời gian: ${{ github.event.inputs.duration }}" -ForegroundColor Magenta
+          Write-Host "🎨 Performance Mode: ULTRA LIGHT" -ForegroundColor Yellow
           Write-Host ""
           
+          # Hiệu ứng loading
           $frames = @('⣾', '⣽', '⣻', '⢿', '⡿', '⣟', '⣯', '⣷')
-          for($i=0; $i -lt 12; $i++) {
-              Write-Host "`r🚀 Initializing Roblox environment... $($frames[$i % 8])" -NoNewline -ForegroundColor Blue
+          for($i=0; $i -lt 10; $i++) {
+              Write-Host "`r🚀 Đang khởi tạo... $($frames[$i % 8])" -NoNewline -ForegroundColor Blue
               Start-Sleep -Milliseconds 100
           }
-          Write-Host "`r✅ System ready for Roblox Studio!          " -ForegroundColor Green
-          Write-Host ""
+          Write-Host "`r✅ Hệ thống sẵn sàng!     " -ForegroundColor Green
 
-      # SYSTEM INFO
-      - name: 📊 SYSTEM INFORMATION
+      # OPTIMASI ULTRA LIGHT
+      - name: ⚡ OPTIMASI PERFORMA ULTRA LIGHT
         run: |
-          Write-Host "═══════════════════════════════════════════" -ForegroundColor Yellow
-          Write-Host "           📊 SYSTEM RESOURCES" -ForegroundColor Yellow
-          Write-Host "═══════════════════════════════════════════" -ForegroundColor Yellow
-          
-          # RAM Info
-          $os = Get-WmiObject Win32_OperatingSystem
-          $totalRAM = [math]::Round($os.TotalVisibleMemorySize/1MB, 2)
-          $freeRAM = [math]::Round($os.FreePhysicalMemory/1MB, 2)
-          $usedRAM = [math]::Round($totalRAM - $freeRAM, 2)
-          
-          Write-Host "🧠 RAM:" -ForegroundColor Cyan
-          Write-Host "   Total: $totalRAM GB" -ForegroundColor White
-          Write-Host "   Free: $freeRAM GB" -ForegroundColor Green
-          Write-Host "   Used: $usedRAM GB" -ForegroundColor Yellow
-          
-          # CPU Info
-          $cpu = Get-WmiObject Win32_Processor
           Write-Host ""
-          Write-Host "⚙️  CPU:" -ForegroundColor Cyan
-          Write-Host "   Name: $($cpu.Name)" -ForegroundColor White
-          Write-Host "   Cores: $($cpu.NumberOfCores)" -ForegroundColor White
-          Write-Host "   Threads: $($cpu.NumberOfLogicalProcessors)" -ForegroundColor White
+          Write-Host "⚡ ĐANG OPTIMASI PERFORMA CHO MOBILE..." -ForegroundColor Yellow
           
-          # Disk Info
-          $disk = Get-PSDrive C
-          $freeDisk = [math]::Round($disk.Free/1GB, 2)
-          $usedDisk = [math]::Round($disk.Used/1GB, 2)
-          $totalDisk = [math]::Round(($disk.Free + $disk.Used)/1GB, 2)
+          # === DISABLE VISUAL EFFECTS ===
+          Write-Host "│ 🎨 Tắt hiệu ứng đồ họa..." -ForegroundColor White
           
-          Write-Host ""
-          Write-Host "💾 Storage (C:):" -ForegroundColor Cyan
-          Write-Host "   Total: $totalDisk GB" -ForegroundColor White
-          Write-Host "   Free: $freeDisk GB" -ForegroundColor Green
-          Write-Host "   Used: $usedDisk GB" -ForegroundColor Yellow
+          # Disable Aero & Transparency
+          Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name "EnableTransparency" -Value 0 -Force -ErrorAction SilentlyContinue
           
-          # GPU Info
-          $gpu = Get-WmiObject Win32_VideoController
-          Write-Host ""
-          Write-Host "🎨 Graphics:" -ForegroundColor Cyan
-          Write-Host "   $($gpu.Name)" -ForegroundColor White
-          Write-Host "   VRAM: $([math]::Round($gpu.AdapterRAM/1GB, 2)) GB" -ForegroundColor White
-          Write-Host ""
-
-      # DEEP CLEANUP
-      - name: 🧹 DEEP CLEANUP & OPTIMIZATION
-        run: |
-          Write-Host "═══════════════════════════════════════════" -ForegroundColor Yellow
-          Write-Host "    🧹 DEEP CLEANUP FOR MAX PERFORMANCE" -ForegroundColor Yellow
-          Write-Host "═══════════════════════════════════════════" -ForegroundColor Yellow
-          Write-Host ""
+          # Disable animations
+          Set-ItemProperty -Path "HKCU:\Control Panel\Desktop\WindowMetrics" -Name "MinAnimate" -Value "0" -Force -ErrorAction SilentlyContinue
           
-          # Stop unnecessary processes
-          Write-Host "⏹️  Stopping unnecessary processes..." -ForegroundColor Cyan
-          $processesToStop = @(
-              'OneDrive', 'Teams', 'Skype', 'msedge', 
-              'MicrosoftEdge*', 'SearchApp', 'SearchUI'
-          )
-          foreach($proc in $processesToStop) {
-              Get-Process -Name $proc -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
-          }
+          # Performance mode for visual effects
+          Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects" -Name "VisualFXSetting" -Value 2 -Force -ErrorAction SilentlyContinue
           
-          # Disable services
-          Write-Host "🛑 Disabling unnecessary services..." -ForegroundColor Cyan
+          # Disable taskbar animations
+          Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "TaskbarAnimations" -Value 0 -Force -ErrorAction SilentlyContinue
+          
+          # === OPTIMIZE RDP SETTINGS ===
+          Write-Host "│ 🌐 Optimasi RDP settings..." -ForegroundColor White
+          
+          # Set RDP to performance mode
+          $rdpPath = "HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp"
+          
+          # Disable wallpaper
+          Set-ItemProperty -Path $rdpPath -Name "fDisableWallpaper" -Value 1 -Force -ErrorAction SilentlyContinue
+          
+          # Disable full window drag
+          Set-ItemProperty -Path $rdpPath -Name "fDisableFullWindowDrag" -Value 1 -Force -ErrorAction SilentlyContinue
+          
+          # Disable menu animations
+          Set-ItemProperty -Path $rdpPath -Name "fDisableMenuAnims" -Value 1 -Force -ErrorAction SilentlyContinue
+          
+          # Disable themes
+          Set-ItemProperty -Path $rdpPath -Name "fDisableThemes" -Value 1 -Force -ErrorAction SilentlyContinue
+          
+          # Disable cursor shadow
+          Set-ItemProperty -Path $rdpPath -Name "fDisableCursorShadow" -Value 1 -Force -ErrorAction SilentlyContinue
+          
+          # Disable cursor blink
+          Set-ItemProperty -Path $rdpPath -Name "fDisableCursorBlink" -Value 1 -Force -ErrorAction SilentlyContinue
+          
+          # Set color depth to 16-bit (hemat bandwidth)
+          Set-ItemProperty -Path $rdpPath -Name "ColorDepth" -Value 2 -Force -ErrorAction SilentlyContinue
+          
+          # Enable compression
+          Set-ItemProperty -Path $rdpPath -Name "fEnableCompression" -Value 1 -Force -ErrorAction SilentlyContinue
+          
+          # === DISABLE UNNECESSARY SERVICES ===
+          Write-Host "│ 🛑 Tắt service tidak perlu..." -ForegroundColor White
+          
           $servicesToDisable = @(
-              'WSearch',           # Windows Search
-              'SysMain',           # Superfetch
-              'DiagTrack',         # Diagnostics
-              'TabletInputService', # Touch
-              'Themes',            # Themes
-              'WbioSrvc',          # Biometric
-              'fhsvc',             # File History
-              'MapsBroker',        # Downloaded Maps
-              'lfsvc',             # Geolocation
-              'RetailDemo',        # Retail Demo
-              'WMPNetworkSvc',     # Windows Media Player
-              'XblAuthManager',    # Xbox Live Auth
-              'XblGameSave',       # Xbox Live Game Save
-              'XboxNetApiSvc',     # Xbox Live Networking
-              'XboxGipSvc'         # Xbox Accessory
+              "WSearch",           # Windows Search
+              "SysMain",           # Superfetch
+              "TabletInputService", # Touch keyboard
+              "Themes",            # Windows Themes
+              "WbioSrvc",          # Windows Biometric
+              "fhsvc"              # File History
           )
           
           foreach($svc in $servicesToDisable) {
               try {
                   Stop-Service -Name $svc -Force -ErrorAction SilentlyContinue
                   Set-Service -Name $svc -StartupType Disabled -ErrorAction SilentlyContinue
-                  Write-Host "  ✓ Disabled: $svc" -ForegroundColor Green
               } catch {
-                  # Ignore
+                  # Ignore errors
               }
           }
           
-          # Clean temp files
-          Write-Host ""
-          Write-Host "🗑️  Cleaning temporary files..." -ForegroundColor Cyan
+          # === OPTIMIZE NETWORK ===
+          Write-Host "│ 🌐 Optimasi network..." -ForegroundColor White
           
-          $tempPaths = @(
-              "$env:TEMP\*",
-              "C:\Windows\Temp\*",
-              "C:\Windows\Prefetch\*",
-              "C:\Windows\SoftwareDistribution\Download\*",
-              "$env:LOCALAPPDATA\Microsoft\Windows\INetCache\*",
-              "$env:LOCALAPPDATA\Microsoft\Windows\WebCache\*",
-              "$env:LOCALAPPDATA\Temp\*"
-          )
+          # Disable Large Send Offload
+          netsh int tcp set global autotuninglevel=normal
           
-          $freedSpace = 0
-          foreach($path in $tempPaths) {
-              try {
-                  $before = (Get-ChildItem -Path ($path -replace '\\\*$', '') -Recurse -ErrorAction SilentlyContinue | Measure-Object -Property Length -Sum).Sum
-                  Remove-Item -Path $path -Recurse -Force -ErrorAction SilentlyContinue
-                  $freedSpace += $before
-              } catch {
-                  # Continue
-              }
-          }
+          # Set TCP optimizer
+          netsh int tcp set global chimney=disabled
+          netsh int tcp set global rss=enabled
+          netsh int tcp set global netdma=disabled
           
-          Write-Host "  ✓ Freed: $([math]::Round($freedSpace/1MB, 2)) MB" -ForegroundColor Green
+          # === CLEAN TEMP FILES ===
+          Write-Host "│ 🧹 Membersihkan file temporary..." -ForegroundColor White
           
-          # Clear event logs
-          Write-Host ""
-          Write-Host "📝 Clearing event logs..." -ForegroundColor Cyan
-          wevtutil el | ForEach-Object { wevtutil cl $_ 2>$null }
-          Write-Host "  ✓ Event logs cleared" -ForegroundColor Green
+          Remove-Item -Path "$env:TEMP\*" -Recurse -Force -ErrorAction SilentlyContinue
+          Remove-Item -Path "C:\Windows\Temp\*" -Recurse -Force -ErrorAction SilentlyContinue
           
-          Write-Host ""
-          Write-Host "✅ Deep cleanup completed!" -ForegroundColor Green
-          Write-Host ""
-
-      # ROBLOX STUDIO OPTIMIZATION
-      - name: ⚡ ROBLOX STUDIO OPTIMIZATION
-        run: |
-          Write-Host "═══════════════════════════════════════════" -ForegroundColor Yellow
-          Write-Host "      ⚡ ROBLOX STUDIO OPTIMIZATION" -ForegroundColor Yellow
-          Write-Host "═══════════════════════════════════════════" -ForegroundColor Yellow
-          Write-Host ""
+          # === DISABLE WINDOWS UPDATE DURING SESSION ===
+          Write-Host "│ ⏸️  Pause Windows Update..." -ForegroundColor White
           
-          $perfMode = "${{ github.event.inputs.performance_mode }}"
+          Stop-Service -Name wuauserv -Force -ErrorAction SilentlyContinue
+          Set-Service -Name wuauserv -StartupType Disabled -ErrorAction SilentlyContinue
           
-          # Set performance variables
-          switch ($perfMode) {
-              'ultra-performance' {
-                  $colorDepth = 4      # 32-bit
-                  $resolution = @(1920, 1080)
-                  $compression = 0     # No compression
-                  $visualFX = $true
-                  $fontSmooth = $true
-                  Write-Host "🚀 Mode: ULTRA PERFORMANCE (Best Quality)" -ForegroundColor Magenta
-              }
-              'balanced' {
-                  $colorDepth = 3      # 24-bit
-                  $resolution = @(1600, 900)
-                  $compression = 1
-                  $visualFX = $false
-                  $fontSmooth = $true
-                  Write-Host "⚖️  Mode: BALANCED (Quality + Speed)" -ForegroundColor Yellow
-              }
-              default { # roblox-optimized
-                  $colorDepth = 3      # 24-bit (lebih baik untuk 3D)
-                  $resolution = @(1366, 768)
-                  $compression = 1
-                  $visualFX = $false
-                  $fontSmooth = $true
-                  Write-Host "🎮 Mode: ROBLOX OPTIMIZED (Recommended)" -ForegroundColor Green
-              }
-          }
+          # === PERFORMANCE REGISTRY TWEAKS ===
+          Write-Host "│ 🔧 Registry performance tweaks..." -ForegroundColor White
           
-          Write-Host "   Resolution: $($resolution[0])x$($resolution[1])" -ForegroundColor Cyan
-          Write-Host "   Color Depth: $($colorDepth * 8)-bit" -ForegroundColor Cyan
-          Write-Host "   Compression: $(if($compression){'ON'}else{'OFF'})" -ForegroundColor Cyan
-          Write-Host ""
-          
-          # === VISUAL EFFECTS FOR 3D WORK ===
-          Write-Host "🎨 Configuring visual effects for 3D work..." -ForegroundColor Cyan
-          
-          if ($visualFX) {
-              # Enable visual effects for better 3D visualization
-              Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name "EnableTransparency" -Value 1 -Force -ErrorAction SilentlyContinue
-              Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects" -Name "VisualFXSetting" -Value 1 -Force -ErrorAction SilentlyContinue
-              Write-Host "  ✓ Visual effects enabled (Better for 3D)" -ForegroundColor Green
-          } else {
-              # Disable for performance
-              Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name "EnableTransparency" -Value 0 -Force -ErrorAction SilentlyContinue
-              Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects" -Name "VisualFXSetting" -Value 2 -Force -ErrorAction SilentlyContinue
-              Set-ItemProperty -Path "HKCU:\Control Panel\Desktop\WindowMetrics" -Name "MinAnimate" -Value "0" -Force -ErrorAction SilentlyContinue
-              Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "TaskbarAnimations" -Value 0 -Force -ErrorAction SilentlyContinue
-              Write-Host "  ✓ Minimal visual effects (Max performance)" -ForegroundColor Green
-          }
-          
-          # Font smoothing (penting untuk UI Roblox Studio)
-          if ($fontSmooth) {
-              Set-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name "FontSmoothing" -Value "2" -Force -ErrorAction SilentlyContinue
-              Set-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name "FontSmoothingType" -Value 2 -Force -ErrorAction SilentlyContinue
-              Write-Host "  ✓ Font smoothing enabled (Better readability)" -ForegroundColor Green
-          }
-          
-          # === RDP OPTIMIZATION FOR 3D ===
-          Write-Host ""
-          Write-Host "🌐 Optimizing RDP for 3D rendering..." -ForegroundColor Cyan
-          
-          $rdpPath = "HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp"
-          
-          # Color depth
-          Set-ItemProperty -Path $rdpPath -Name "ColorDepth" -Value $colorDepth -Force -ErrorAction SilentlyContinue
-          
-          # Compression
-          Set-ItemProperty -Path $rdpPath -Name "fEnableCompression" -Value $compression -Force -ErrorAction SilentlyContinue
-          
-          # Desktop composition (penting untuk 3D)
-          if ($visualFX) {
-              Set-ItemProperty -Path $rdpPath -Name "fDisableThemes" -Value 0 -Force -ErrorAction SilentlyContinue
-              Set-ItemProperty -Path $rdpPath -Name "fDisableWallpaper" -Value 0 -Force -ErrorAction SilentlyContinue
-          } else {
-              Set-ItemProperty -Path $rdpPath -Name "fDisableThemes" -Value 1 -Force -ErrorAction SilentlyContinue
-              Set-ItemProperty -Path $rdpPath -Name "fDisableWallpaper" -Value 1 -Force -ErrorAction SilentlyContinue
-          }
-          
-          # Cursor settings (penting untuk precision 3D work)
-          Set-ItemProperty -Path $rdpPath -Name "fDisableCursorShadow" -Value 0 -Force -ErrorAction SilentlyContinue
-          Set-ItemProperty -Path $rdpPath -Name "fDisableCursorBlink" -Value 0 -Force -ErrorAction SilentlyContinue
-          
-          # Menu animations (disable untuk performance)
-          Set-ItemProperty -Path $rdpPath -Name "fDisableMenuAnims" -Value 1 -Force -ErrorAction SilentlyContinue
-          Set-ItemProperty -Path $rdpPath -Name "fDisableFullWindowDrag" -Value 1 -Force -ErrorAction SilentlyContinue
-          
-          Write-Host "  ✓ RDP configured for 3D workload" -ForegroundColor Green
-          
-          # === NETWORK OPTIMIZATION ===
-          Write-Host ""
-          Write-Host "🌐 Optimizing network for low latency..." -ForegroundColor Cyan
-          
-          # TCP optimization
-          netsh int tcp set global autotuninglevel=normal | Out-Null
-          netsh int tcp set global chimney=disabled | Out-Null
-          netsh int tcp set global rss=enabled | Out-Null
-          netsh int tcp set global netdma=disabled | Out-Null
-          netsh int tcp set global dca=enabled | Out-Null
-          netsh int tcp set global ecncapability=enabled | Out-Null
-          
-          # Set TCP parameters for better RDP performance
-          netsh int tcp set supplemental template=internet congestionprovider=ctcp | Out-Null
-          
-          Write-Host "  ✓ Network optimized for low latency" -ForegroundColor Green
-          
-          # === POWER PLAN ===
-          Write-Host ""
-          Write-Host "⚡ Setting high performance power plan..." -ForegroundColor Cyan
-          
-          powercfg /setactive 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c | Out-Null
-          powercfg /change monitor-timeout-ac 0 | Out-Null
-          powercfg /change disk-timeout-ac 0 | Out-Null
-          powercfg /change standby-timeout-ac 0 | Out-Null
-          
-          Write-Host "  ✓ High performance mode activated" -ForegroundColor Green
-          
-          # === REGISTRY TWEAKS ===
-          Write-Host ""
-          Write-Host "🔧 Applying registry performance tweaks..." -ForegroundColor Cyan
-          
-          # Speed up menu
+          # Speed up menu show delay
           Set-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name "MenuShowDelay" -Value "0" -Force -ErrorAction SilentlyContinue
           
-          # Mouse precision (penting untuk 3D work)
-          Set-ItemProperty -Path "HKCU:\Control Panel\Mouse" -Name "MouseSpeed" -Value "0" -Force -ErrorAction SilentlyContinue
-          Set-ItemProperty -Path "HKCU:\Control Panel\Mouse" -Name "MouseThreshold1" -Value "0" -Force -ErrorAction SilentlyContinue
-          Set-ItemProperty -Path "HKCU:\Control Panel\Mouse" -Name "MouseThreshold2" -Value "0" -Force -ErrorAction SilentlyContinue
+          # Reduce mouse hover time
           Set-ItemProperty -Path "HKCU:\Control Panel\Mouse" -Name "MouseHoverTime" -Value "100" -Force -ErrorAction SilentlyContinue
           
-          # Keyboard response
-          Set-ItemProperty -Path "HKCU:\Control Panel\Keyboard" -Name "KeyboardDelay" -Value "0" -Force -ErrorAction SilentlyContinue
-          Set-ItemProperty -Path "HKCU:\Control Panel\Keyboard" -Name "KeyboardSpeed" -Value "31" -Force -ErrorAction SilentlyContinue
+          # Disable smooth scrolling
+          Set-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name "SmoothScroll" -Value 0 -Force -ErrorAction SilentlyContinue
           
-          Write-Host "  ✓ Registry tweaks applied" -ForegroundColor Green
+          # Disable font smoothing
+          Set-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name "FontSmoothing" -Value "0" -Force -ErrorAction SilentlyContinue
           
-          # === GPU OPTIMIZATION ===
-          Write-Host ""
-          Write-Host "🎨 Optimizing GPU settings..." -ForegroundColor Cyan
-          
-          # Enable hardware acceleration
-          Set-ItemProperty -Path "HKCU:\Software\Microsoft\Avalon.Graphics" -Name "DisableHWAcceleration" -Value 0 -Force -ErrorAction SilentlyContinue
-          
-          Write-Host "  ✓ Hardware acceleration enabled" -ForegroundColor Green
-          
-          # Save settings to env
-          echo "RDP_COLOR_DEPTH=$colorDepth" >> $env:GITHUB_ENV
-          echo "RDP_WIDTH=$($resolution[0])" >> $env:GITHUB_ENV
-          echo "RDP_HEIGHT=$($resolution[1])" >> $env:GITHUB_ENV
-          echo "RDP_COMPRESSION=$compression" >> $env:GITHUB_ENV
-          
-          Write-Host ""
-          Write-Host "✅ Roblox Studio optimization completed!" -ForegroundColor Green
-          Write-Host ""
+          Write-Host "✅ Optimasi Ultra Light selesai!" -ForegroundColor Green
 
-      # INSTALL ROBLOX STUDIO
-      - name: 🎮 INSTALL ROBLOX STUDIO
+      # CẤU HÌNH RDP
+      - name: 🔧 CẤU HÌNH RDP
         run: |
-          Write-Host "═══════════════════════════════════════════" -ForegroundColor Yellow
-          Write-Host "        🎮 INSTALLING ROBLOX STUDIO" -ForegroundColor Yellow
-          Write-Host "═══════════════════════════════════════════" -ForegroundColor Yellow
           Write-Host ""
-          
-          Write-Host "📥 Downloading Roblox Studio installer..." -ForegroundColor Cyan
-          
-          $installerPath = "$env:TEMP\RobloxStudioInstaller.exe"
-          $downloadUrl = "https://setup.rbxcdn.com/RobloxStudioLauncherBeta.exe"
-          
-          try {
-              # Download with progress
-              $ProgressPreference = 'SilentlyContinue'
-              Invoke-WebRequest -Uri $downloadUrl -OutFile $installerPath -UseBasicParsing
-              $ProgressPreference = 'Continue'
-              
-              Write-Host "  ✓ Downloaded successfully!" -ForegroundColor Green
-              Write-Host ""
-              
-              Write-Host "⚙️  Installing Roblox Studio..." -ForegroundColor Cyan
-              Write-Host "  (This may take 2-3 minutes)" -ForegroundColor Yellow
-              Write-Host ""
-              
-              # Install silently
-              $process = Start-Process -FilePath $installerPath -ArgumentList "--silent" -PassThru -Wait
-              
-              # Wait for installation to complete
-              Start-Sleep -Seconds 30
-              
-              # Check if installed
-              $studioPath = "$env:LOCALAPPDATA\Roblox\Versions"
-              if (Test-Path $studioPath) {
-                  $versions = Get-ChildItem -Path $studioPath -Directory | Where-Object { $_.Name -match "version-" }
-                  if ($versions) {
-                      $latestVersion = $versions | Sort-Object LastWriteTime -Descending | Select-Object -First 1
-                      $studioExe = Join-Path $latestVersion.FullName "RobloxStudioBeta.exe"
-                      
-                      if (Test-Path $studioExe) {
-                          Write-Host "  ✓ Roblox Studio installed successfully!" -ForegroundColor Green
-                          Write-Host "  📍 Location: $studioExe" -ForegroundColor White
-                          
-                          # Create desktop shortcut
-                          $WshShell = New-Object -ComObject WScript.Shell
-                          $Shortcut = $WshShell.CreateShortcut("C:\Users\Public\Desktop\Roblox Studio.lnk")
-                          $Shortcut.TargetPath = $studioExe
-                          $Shortcut.Save()
-                          
-                          Write-Host "  ✓ Desktop shortcut created" -ForegroundColor Green
-                          
-                          echo "ROBLOX_STUDIO_PATH=$studioExe" >> $env:GITHUB_ENV
-                      } else {
-                          Write-Host "  ⚠️  Installation completed but executable not found" -ForegroundColor Yellow
-                          Write-Host "  You can download it manually from: https://www.roblox.com/create" -ForegroundColor Cyan
-                      }
-                  }
-              } else {
-                  Write-Host "  ⚠️  Installation path not found" -ForegroundColor Yellow
-                  Write-Host "  You can download it manually from: https://www.roblox.com/create" -ForegroundColor Cyan
-              }
-              
-              # Cleanup
-              Remove-Item $installerPath -Force -ErrorAction SilentlyContinue
-              
-          } catch {
-              Write-Host "  ⚠️  Auto-install failed: $($_.Exception.Message)" -ForegroundColor Yellow
-              Write-Host ""
-              Write-Host "  📝 Manual install instructions:" -ForegroundColor Cyan
-              Write-Host "     1. Open browser in RDP" -ForegroundColor White
-              Write-Host "     2. Go to: https://www.roblox.com/create" -ForegroundColor White
-              Write-Host "     3. Click 'Start Creating' to download Studio" -ForegroundColor White
-              Write-Host "     4. Run the installer" -ForegroundColor White
-          }
-          
-          Write-Host ""
-
-      # INSTALL USEFUL TOOLS
-      - name: 🛠️ INSTALL USEFUL TOOLS
-        run: |
-          Write-Host "═══════════════════════════════════════════" -ForegroundColor Yellow
-          Write-Host "          🛠️  INSTALLING TOOLS" -ForegroundColor Yellow
-          Write-Host "═══════════════════════════════════════════" -ForegroundColor Yellow
-          Write-Host ""
-          
-          # Install Chocolatey
-          Write-Host "📦 Installing Chocolatey..." -ForegroundColor Cyan
-          Set-ExecutionPolicy Bypass -Scope Process -Force
-          [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
-          try {
-              Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
-              Write-Host "  ✓ Chocolatey installed" -ForegroundColor Green
-          } catch {
-              Write-Host "  ⚠️  Chocolatey install failed" -ForegroundColor Yellow
-          }
-          
-          Write-Host ""
-          Write-Host "🌐 Installing Google Chrome..." -ForegroundColor Cyan
-          choco install googlechrome -y --ignore-checksums --no-progress | Out-Null
-          Write-Host "  ✓ Chrome installed" -ForegroundColor Green
-          
-          Write-Host ""
-          Write-Host "📝 Installing Notepad++..." -ForegroundColor Cyan
-          choco install notepadplusplus -y --ignore-checksums --no-progress | Out-Null
-          Write-Host "  ✓ Notepad++ installed" -ForegroundColor Green
-          
-          Write-Host ""
-          Write-Host "📂 Installing 7-Zip..." -ForegroundColor Cyan
-          choco install 7zip -y --ignore-checksums --no-progress | Out-Null
-          Write-Host "  ✓ 7-Zip installed" -ForegroundColor Green
-          
-          Write-Host ""
-          Write-Host "✅ Tools installed!" -ForegroundColor Green
-          Write-Host ""
-
-      # CONFIGURE RDP
-      - name: 🔧 CONFIGURE RDP
-        run: |
-          Write-Host "═══════════════════════════════════════════" -ForegroundColor Yellow
-          Write-Host "            🔧 CONFIGURE RDP" -ForegroundColor Yellow
-          Write-Host "═══════════════════════════════════════════" -ForegroundColor Yellow
-          Write-Host ""
-          
-          Write-Host "⚙️  Enabling RDP..." -ForegroundColor Cyan
+          Write-Host "🛠️  CẤU HÌNH RDP" -ForegroundColor Yellow
           
           # Enable RDP
           Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -Name "fDenyTSConnections" -Value 0 -Force
           
-          # Disable NLA untuk compatibility
+          # Disable NLA
           Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -Name "UserAuthentication" -Value 0 -Force
           Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -Name "SecurityLayer" -Value 0 -Force
           
-          # Allow multiple sessions
-          Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -Name "fSingleSessionPerUser" -Value 0 -Force -ErrorAction SilentlyContinue
+          # Firewall rules
+          netsh advfirewall firewall add rule name="RDP-UltraLight" dir=in action=allow protocol=TCP localport=3389 profile=any | Out-Null
+          netsh advfirewall firewall add rule name="RDP-UltraLight-Out" dir=out action=allow protocol=TCP localport=3389 profile=any | Out-Null
           
-          Write-Host "  ✓ RDP enabled" -ForegroundColor Green
-          
-          Write-Host ""
-          Write-Host "🔥 Configuring firewall..." -ForegroundColor Cyan
-          
-          # Remove old rules
-          netsh advfirewall firewall delete rule name="RDP-Roblox" 2>$null | Out-Null
-          
-          # Add new rules
-          netsh advfirewall firewall add rule name="RDP-Roblox-In" dir=in action=allow protocol=TCP localport=3389 profile=any | Out-Null
-          netsh advfirewall firewall add rule name="RDP-Roblox-Out" dir=out action=allow protocol=TCP localport=3389 profile=any | Out-Null
-          
-          Write-Host "  ✓ Firewall configured" -ForegroundColor Green
-          
-          Write-Host ""
-          Write-Host "🚀 Starting RDP service..." -ForegroundColor Cyan
-          
-          # Start RDP service
+          # Start services
           Set-Service -Name TermService -StartupType Automatic -ErrorAction SilentlyContinue
-          Restart-Service -Name TermService -Force -ErrorAction SilentlyContinue
           Start-Service -Name TermService -ErrorAction SilentlyContinue
           
-          # Verify service
-          $service = Get-Service -Name TermService
-          if ($service.Status -eq 'Running') {
-              Write-Host "  ✓ RDP service running" -ForegroundColor Green
-          } else {
-              Write-Host "  ⚠️  RDP service status: $($service.Status)" -ForegroundColor Yellow
-          }
-          
-          Write-Host ""
-          Write-Host "✅ RDP configuration completed!" -ForegroundColor Green
-          Write-Host ""
+          Write-Host "✅ RDP configured!" -ForegroundColor Green
 
       # CREATE USER
-      - name: 👤 CREATE USER ACCOUNT
+      - name: 👤 TẠO USER
         run: |
-          Write-Host "═══════════════════════════════════════════" -ForegroundColor Yellow
-          Write-Host "          👤 CREATE USER ACCOUNT" -ForegroundColor Yellow
-          Write-Host "═══════════════════════════════════════════" -ForegroundColor Yellow
           Write-Host ""
+          Write-Host "👤 TẠO TÀI KHOẢN" -ForegroundColor Yellow
           
-          # Generate strong password
-          function New-StrongPassword {
-              $chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789!@#$%^&*'
-              $password = -join ((1..16) | ForEach-Object { $chars[(Get-Random -Maximum $chars.Length)] })
-              return $password
+          # Generate password
+          function New-SecurePassword {
+              $chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789!@#$%&*+-='
+              return -join ((1..12) | ForEach-Object { $chars[(Get-Random -Maximum $chars.Length)] })
           }
           
-          $username = "RobloxDev"
-          $password = New-StrongPassword
+          $password = New-SecurePassword
           $securePass = ConvertTo-SecureString $password -AsPlainText -Force
           
-          Write-Host "👤 Creating user: $username" -ForegroundColor Cyan
+          # Remove old user
+          Remove-LocalUser -Name "MOBILE-RDP" -ErrorAction SilentlyContinue
           
-          # Remove if exists
-          Remove-LocalUser -Name $username -ErrorAction SilentlyContinue
-          
-          # Create user
-          New-LocalUser -Name $username -Password $securePass -FullName "Roblox Developer" -Description "Roblox Studio Developer Account" -AccountNeverExpires -ErrorAction Stop
-          
-          # Set password policies
-          Set-LocalUser -Name $username -PasswordNeverExpires $true -ErrorAction SilentlyContinue
+          # Create new user
+          New-LocalUser -Name "MOBILE-RDP" -Password $securePass -AccountNeverExpires -Description "Mobile Optimized RDP"
+          Set-LocalUser -Name "MOBILE-RDP" -PasswordNeverExpires $true
           
           # Add to groups
-          Add-LocalGroupMember -Group "Administrators" -Member $username -ErrorAction SilentlyContinue
-          Add-LocalGroupMember -Group "Remote Desktop Users" -Member $username -ErrorAction SilentlyContinue
+          Add-LocalGroupMember -Group "Administrators" -Member "MOBILE-RDP" -ErrorAction SilentlyContinue
+          Add-LocalGroupMember -Group "Remote Desktop Users" -Member "MOBILE-RDP" -ErrorAction SilentlyContinue
           
-          # Enable user
-          Enable-LocalUser -Name $username -ErrorAction SilentlyContinue
-          
-          Write-Host "  ✓ User created successfully" -ForegroundColor Green
-          Write-Host "  👤 Username: $username" -ForegroundColor White
-          Write-Host "  🔐 Password: ********" -ForegroundColor White
+          Enable-LocalUser -Name "MOBILE-RDP"
           
           # Save credentials
-          echo "RDP_USER=$username" >> $env:GITHUB_ENV
+          echo "RDP_USER=MOBILE-RDP" >> $env:GITHUB_ENV
           echo "RDP_PASS=$password" >> $env:GITHUB_ENV
+          echo "$password" > $env:TEMP\rdp_pass.txt
           
-          # Save to file (for display later)
-          echo "$password" > $env:TEMP\rdp_credentials.txt
-          
-          Write-Host ""
-          Write-Host "✅ User account ready!" -ForegroundColor Green
-          Write-Host ""
+          Write-Host "✅ User created: MOBILE-RDP" -ForegroundColor Green
 
-      # SETUP TAILSCALE
-      - name: 🌐 SETUP TAILSCALE VPN
+      # TAILSCALE SETUP
+      - name: 🌐 SETUP TAILSCALE
         env:
           TAILSCALE_AUTH_KEY: ${{ secrets.TAILSCALE_AUTH_KEY }}
         run: |
-          Write-Host "═══════════════════════════════════════════" -ForegroundColor Yellow
-          Write-Host "         🌐 SETUP TAILSCALE VPN" -ForegroundColor Yellow
-          Write-Host "═══════════════════════════════════════════" -ForegroundColor Yellow
           Write-Host ""
+          Write-Host "🌐 SETUP NETWORK" -ForegroundColor Yellow
           
-          if (-not $env:TAILSCALE_AUTH_KEY) {
-              Write-Host "❌ ERROR: TAILSCALE_AUTH_KEY not found!" -ForegroundColor Red
-              Write-Host ""
-              Write-Host "Please add your Tailscale auth key:" -ForegroundColor Yellow
-              Write-Host "1. Go to: https://login.tailscale.com/admin/settings/keys" -ForegroundColor Cyan
-              Write-Host "2. Generate a new auth key" -ForegroundColor Cyan
-              Write-Host "3. Add it as GitHub secret: TAILSCALE_AUTH_KEY" -ForegroundColor Cyan
-              Write-Host ""
-              exit 1
-          }
+          # Download & Install
+          $msiPath = "$env:TEMP\tailscale.msi"
+          Invoke-WebRequest -Uri "https://pkgs.tailscale.com/stable/tailscale-setup-latest-amd64.msi" -OutFile $msiPath
+          Start-Process msiexec.exe -ArgumentList "/i", "`"$msiPath`"", "/quiet", "/norestart" -Wait
+          Remove-Item $msiPath -Force -ErrorAction SilentlyContinue
           
-          Write-Host "📥 Downloading Tailscale..." -ForegroundColor Cyan
+          Start-Sleep -Seconds 10
           
-          $msiPath = "$env:TEMP\tailscale-setup.msi"
-          $downloadUrl = "https://pkgs.tailscale.com/stable/tailscale-setup-latest-amd64.msi"
+          # Connect
+          & "$env:ProgramFiles\Tailscale\tailscale.exe" up --authkey=$env:TAILSCALE_AUTH_KEY --hostname=mobile-rdp-$env:GITHUB_RUN_ID --accept-routes --accept-dns --reset
           
-          try {
-              $ProgressPreference = 'SilentlyContinue'
-              Invoke-WebRequest -Uri $downloadUrl -OutFile $msiPath -UseBasicParsing
-              $ProgressPreference = 'Continue'
-              
-              Write-Host "  ✓ Downloaded" -ForegroundColor Green
-              
-              Write-Host ""
-              Write-Host "⚙️  Installing Tailscale..." -ForegroundColor Cyan
-              
-              Start-Process msiexec.exe -ArgumentList "/i", "`"$msiPath`"", "/quiet", "/norestart" -Wait -NoNewWindow
-              
-              Write-Host "  ✓ Installed" -ForegroundColor Green
-              
-              # Cleanup installer
-              Remove-Item $msiPath -Force -ErrorAction SilentlyContinue
-              
-              # Wait for service
-              Start-Sleep -Seconds 15
-              
-              Write-Host ""
-              Write-Host "🔗 Connecting to Tailscale network..." -ForegroundColor Cyan
-              
-              $tailscalePath = "$env:ProgramFiles\Tailscale\tailscale.exe"
-              
-              if (Test-Path $tailscalePath) {
-                  # Connect to Tailscale
-                  $hostname = "roblox-studio-$env:GITHUB_RUN_ID"
-                  & $tailscalePath up --authkey=$env:TAILSCALE_AUTH_KEY --hostname=$hostname --accept-routes --accept-dns --reset --advertise-tags=tag:github-runner 2>&1 | Out-Null
-                  
-                  Write-Host "  ✓ Connected to Tailscale" -ForegroundColor Green
-                  
-                  # Get IP address
-                  Write-Host ""
-                  Write-Host "🔍 Getting Tailscale IP..." -ForegroundColor Cyan
-                  
-                  $ip = $null
-                  for($i=0; $i -lt 20; $i++) {
-                      Start-Sleep -Seconds 2
-                      $ip = & $tailscalePath ip -4 2>&1
-                      
-                      if ($ip -and $ip -match '^\d+\.\d+\.\d+\.\d+$') {
-                          echo "TAILSCALE_IP=$ip" >> $env:GITHUB_ENV
-                          Write-Host "  ✓ IP Address: $ip" -ForegroundColor Green
-                          break
-                      }
-                      
-                      Write-Host "  ⏳ Waiting for IP... ($($i+1)/20)" -ForegroundColor Yellow
-                  }
-                  
-                  if (-not $ip -or $ip -notmatch '^\d+\.\d+\.\d+\.\d+$') {
-                      Write-Host "  ⚠️  Could not get Tailscale IP" -ForegroundColor Yellow
-                      echo "TAILSCALE_IP=Not available" >> $env:GITHUB_ENV
-                  }
-                  
-              } else {
-                  Write-Host "  ❌ Tailscale executable not found" -ForegroundColor Red
-                  echo "TAILSCALE_IP=Installation failed" >> $env:GITHUB_ENV
+          # Get IP
+          $ip = $null
+          for($i=0; $i -lt 15; $i++) {
+              $ip = & "$env:ProgramFiles\Tailscale\tailscale.exe" ip -4 2>&1
+              if ($ip -and $ip -match '^\d+\.\d+\.\d+\.\d+$') {
+                  echo "TAILSCALE_IP=$ip" >> $env:GITHUB_ENV
+                  Write-Host "✅ IP: $ip" -ForegroundColor Green
+                  break
               }
-              
-          } catch {
-              Write-Host "  ❌ Error: $($_.Exception.Message)" -ForegroundColor Red
-              echo "TAILSCALE_IP=Error" >> $env:GITHUB_ENV
+              Start-Sleep -Seconds 3
           }
           
-          Write-Host ""
-          Write-Host "✅ Tailscale setup completed!" -ForegroundColor Green
-          Write-Host ""
+          if (-not $ip -or $ip -notmatch '^\d+\.\d+\.\d+\.\d+$') {
+              echo "TAILSCALE_IP=localhost" >> $env:GITHUB_ENV
+          }
 
       # CREATE RDP CONFIG FILE
       - name: 📄 CREATE RDP CONFIG FILE
         run: |
-          Write-Host "═══════════════════════════════════════════" -ForegroundColor Yellow
-          Write-Host "        📄 CREATE RDP CONFIG FILE" -ForegroundColor Yellow
-          Write-Host "═══════════════════════════════════════════" -ForegroundColor Yellow
           Write-Host ""
+          Write-Host "📄 CREATING OPTIMIZED RDP CONFIG..." -ForegroundColor Yellow
           
-          $colorDepth = $env:RDP_COLOR_DEPTH
-          $width = $env:RDP_WIDTH
-          $height = $env:RDP_HEIGHT
-          $compression = $env:RDP_COMPRESSION
-          $ip = $env:TAILSCALE_IP
+          $rdpConfig = "screen mode id:i:2`r`n"
+          $rdpConfig += "use multimon:i:0`r`n"
+          $rdpConfig += "desktopwidth:i:1024`r`n"
+          $rdpConfig += "desktopheight:i:768`r`n"
+          $rdpConfig += "session bpp:i:16`r`n"
+          $rdpConfig += "winposstr:s:0,1,0,0,800,600`r`n"
+          $rdpConfig += "compression:i:1`r`n"
+          $rdpConfig += "keyboardhook:i:2`r`n"
+          $rdpConfig += "audiocapturemode:i:0`r`n"
+          $rdpConfig += "videoplaybackmode:i:1`r`n"
+          $rdpConfig += "connection type:i:6`r`n"
+          $rdpConfig += "networkautodetect:i:1`r`n"
+          $rdpConfig += "bandwidthautodetect:i:1`r`n"
+          $rdpConfig += "displayconnectionbar:i:1`r`n"
+          $rdpConfig += "enableworkspacereconnect:i:0`r`n"
+          $rdpConfig += "disable wallpaper:i:1`r`n"
+          $rdpConfig += "allow font smoothing:i:0`r`n"
+          $rdpConfig += "allow desktop composition:i:0`r`n"
+          $rdpConfig += "disable full window drag:i:1`r`n"
+          $rdpConfig += "disable menu anims:i:1`r`n"
+          $rdpConfig += "disable themes:i:1`r`n"
+          $rdpConfig += "disable cursor setting:i:1`r`n"
+          $rdpConfig += "bitmapcachepersistenable:i:1`r`n"
+          $rdpConfig += "full address:s:$env:TAILSCALE_IP`r`n"
+          $rdpConfig += "audiomode:i:2`r`n"
+          $rdpConfig += "redirectprinters:i:0`r`n"
+          $rdpConfig += "redirectcomports:i:0`r`n"
+          $rdpConfig += "redirectsmartcards:i:0`r`n"
+          $rdpConfig += "redirectclipboard:i:1`r`n"
+          $rdpConfig += "redirectposdevices:i:0`r`n"
+          $rdpConfig += "autoreconnection enabled:i:1`r`n"
+          $rdpConfig += "authentication level:i:0`r`n"
+          $rdpConfig += "prompt for credentials:i:0`r`n"
+          $rdpConfig += "negotiate security layer:i:0`r`n"
+          $rdpConfig += "remoteapplicationmode:i:0`r`n"
+          $rdpConfig += "alternate shell:s:`r`n"
+          $rdpConfig += "shell working directory:s:`r`n"
+          $rdpConfig += "gatewayhostname:s:`r`n"
+          $rdpConfig += "gatewayusagemethod:i:4`r`n"
+          $rdpConfig += "gatewaycredentialssource:i:4`r`n"
+          $rdpConfig += "gatewayprofileusagemethod:i:0`r`n"
+          $rdpConfig += "promptcredentialonce:i:0`r`n"
+          $rdpConfig += "gatewaybrokeringtype:i:0`r`n"
+          $rdpConfig += "use redirection server name:i:0`r`n"
+          $rdpConfig += "rdgiskdcproxy:i:0`r`n"
+          $rdpConfig += "kdcproxyname:s:`r`n"
           
-          Write-Host "⚙️  Generating optimized RDP config..." -ForegroundColor Cyan
-          Write-Host "   Resolution: ${width}x${height}" -ForegroundColor White
-          Write-Host "   Color: $($colorDepth * 8)-bit" -ForegroundColor White
-          Write-Host "   Target: Roblox Studio" -ForegroundColor White
-          Write-Host ""
+          $rdpConfig | Out-File -FilePath "$env:TEMP\mobile-optimized.rdp" -Encoding ASCII
           
-          $rdpConfig = @"
-screen mode id:i:2
-use multimon:i:0
-desktopwidth:i:$width
-desktopheight:i:$height
-session bpp:i:$($colorDepth * 8)
-winposstr:s:0,3,0,0,800,600
-compression:i:$compression
-keyboardhook:i:2
-audiocapturemode:i:0
-videoplaybackmode:i:1
-connection type:i:6
-networkautodetect:i:1
-bandwidthautodetect:i:1
-displayconnectionbar:i:1
-enableworkspacereconnect:i:0
-disable wallpaper:i:0
-allow font smoothing:i:1
-allow desktop composition:i:1
-disable full window drag:i:1
-disable menu anims:i:1
-disable themes:i:0
-disable cursor setting:i:0
-bitmapcachepersistenable:i:1
-full address:s:$ip
-audiomode:i:0
-redirectprinters:i:0
-redirectcomports:i:0
-redirectsmartcards:i:0
-redirectclipboard:i:1
-redirectposdevices:i:0
-redirectdirectx:i:1
-redirectwebauthn:i:1
-autoreconnection enabled:i:1
-authentication level:i:0
-prompt for credentials:i:0
-negotiate security layer:i:0
-remoteapplicationmode:i:0
-alternate shell:s:
-shell working directory:s:
-gatewayhostname:s:
-gatewayusagemethod:i:4
-gatewaycredentialssource:i:4
-gatewayprofileusagemethod:i:0
-promptcredentialonce:i:0
-gatewaybrokeringtype:i:0
-use redirection server name:i:0
-rdgiskdcproxy:i:0
-kdcproxyname:s:
-drivestoredirect:s:
-"@
-          
-          $configPath = "$env:TEMP\roblox-studio-rdp.rdp"
-          $rdpConfig | Out-File -FilePath $configPath -Encoding ASCII -Force
-          
-          Write-Host "  ✓ RDP config created: $configPath" -ForegroundColor Green
-          Write-Host ""
-          Write-Host "✅ RDP config file ready!" -ForegroundColor Green
-          Write-Host ""
+          Write-Host "✅ RDP config created!" -ForegroundColor Green
+          Write-Host "│ Resolution: 1024x768" -ForegroundColor Cyan
+          Write-Host "│ Color Depth: 16-bit" -ForegroundColor Cyan
+          Write-Host "│ Compression: Enabled" -ForegroundColor Cyan
+          Write-Host "│ All visual effects: Disabled" -ForegroundColor Cyan
 
-      # DISPLAY CONNECTION INFO
-      - name: 🎉 DISPLAY CONNECTION INFO
+      # DISPLAY INFO
+      - name: 🎉 THÔNG TIN KẾT NỐI
         run: |
-          $password = Get-Content $env:TEMP\rdp_credentials.txt -ErrorAction SilentlyContinue
-          $ip = $env:TAILSCALE_IP
-          $username = $env:RDP_USER
+          $password = Get-Content $env:TEMP\rdp_pass.txt -ErrorAction SilentlyContinue
           
-          # Calculate session time
+          # Calculate time
           $durationInput = "${{ github.event.inputs.duration }}"
           switch ($durationInput) {
-              "3h" { $totalMinutes = 180; $displayTime = "3 jam" }
-              "5h50m" { $totalMinutes = 350; $displayTime = "5 jam 50 menit" }
-              "11h40m" { $totalMinutes = 700; $displayTime = "11 jam 40 menit" }
-              "23h20m" { $totalMinutes = 1400; $displayTime = "23 jam 20 menit" }
+              "1h" { $totalMinutes = 60; $displayTime = "1 giờ" }
+              "3h" { $totalMinutes = 180; $displayTime = "3 giờ" }
+              "5h50m" { $totalMinutes = 350; $displayTime = "5 giờ 50 phút" }
+              "11h40m" { $totalMinutes = 700; $displayTime = "11 giờ 40 phút" }
+              "23h20m" { $totalMinutes = 1400; $displayTime = "23 giờ 20 phút" }
           }
           
           $timeZone = [System.TimeZoneInfo]::FindSystemTimeZoneById("SE Asia Standard Time")
@@ -764,296 +325,101 @@ drivestoredirect:s:
           $endTime = $startTime.AddMinutes($totalMinutes)
           
           Write-Host ""
-          Write-Host "╔═══════════════════════════════════════════════════╗" -ForegroundColor Green
-          Write-Host "║                                                   ║" -ForegroundColor Green
-          Write-Host "║     🎮 ROBLOX STUDIO RDP - READY TO USE! 🎮      ║" -ForegroundColor Green
-          Write-Host "║                                                   ║" -ForegroundColor Green
-          Write-Host "╚═══════════════════════════════════════════════════╝" -ForegroundColor Green
-          Write-Host ""
-          Write-Host "┌───────────────────────────────────────────────────┐" -ForegroundColor Cyan
-          Write-Host "│              📋 CONNECTION DETAILS                │" -ForegroundColor Cyan
-          Write-Host "├───────────────────────────────────────────────────┤" -ForegroundColor Cyan
-          Write-Host "│                                                   │" -ForegroundColor Cyan
-          Write-Host "│  🌐  IP Address : $ip" -ForegroundColor White
-          Write-Host "│  👤  Username   : $username" -ForegroundColor White
-          Write-Host "│  🔐  Password   : $password" -ForegroundColor White
-          Write-Host "│  📍  RDP Port   : 3389" -ForegroundColor White
-          Write-Host "│                                                   │" -ForegroundColor Cyan
-          Write-Host "├───────────────────────────────────────────────────┤" -ForegroundColor Cyan
-          Write-Host "│              ⏰ SESSION INFORMATION               │" -ForegroundColor Cyan
-          Write-Host "├───────────────────────────────────────────────────┤" -ForegroundColor Cyan
-          Write-Host "│                                                   │" -ForegroundColor Cyan
-          Write-Host "│  ⏱️   Duration  : $displayTime" -ForegroundColor White
-          Write-Host "│  🕐  Start Time : $($startTime.ToString('dd/MM/yyyy HH:mm:ss')) WIB" -ForegroundColor White
-          Write-Host "│  🕐  End Time   : $($endTime.ToString('dd/MM/yyyy HH:mm:ss')) WIB" -ForegroundColor White
-          Write-Host "│                                                   │" -ForegroundColor Cyan
-          Write-Host "├───────────────────────────────────────────────────┤" -ForegroundColor Cyan
-          Write-Host "│              ⚡ SYSTEM SPECIFICATIONS             │" -ForegroundColor Cyan
-          Write-Host "├───────────────────────────────────────────────────┤" -ForegroundColor Cyan
-          Write-Host "│                                                   │" -ForegroundColor Cyan
-          Write-Host "│  🧠  RAM        : 7 GB" -ForegroundColor White
-          Write-Host "│  💾  Storage    : ~14 GB SSD" -ForegroundColor White
-          Write-Host "│  ⚙️   CPU        : 2 Cores" -ForegroundColor White
-          Write-Host "│  🎨  Resolution : $($env:RDP_WIDTH)x$($env:RDP_HEIGHT)" -ForegroundColor White
-          Write-Host "│  🖼️   Color      : $($env:RDP_COLOR_DEPTH * 8)-bit" -ForegroundColor White
-          Write-Host "│                                                   │" -ForegroundColor Cyan
-          Write-Host "├───────────────────────────────────────────────────┤" -ForegroundColor Cyan
-          Write-Host "│              🎮 ROBLOX STUDIO STATUS              │" -ForegroundColor Cyan
-          Write-Host "├───────────────────────────────────────────────────┤" -ForegroundColor Cyan
-          Write-Host "│                                                   │" -ForegroundColor Cyan
-          
-          if ($env:ROBLOX_STUDIO_PATH) {
-              Write-Host "│  ✅  Status     : Installed & Ready!" -ForegroundColor Green
-              Write-Host "│  📂  Shortcut   : Desktop" -ForegroundColor White
-          } else {
-              Write-Host "│  ⚠️   Status     : Manual install required" -ForegroundColor Yellow
-              Write-Host "│  🌐  URL        : https://www.roblox.com/create" -ForegroundColor White
-          }
-          
-          Write-Host "│                                                   │" -ForegroundColor Cyan
-          Write-Host "└───────────────────────────────────────────────────┘" -ForegroundColor Cyan
-          Write-Host ""
-          Write-Host "┌───────────────────────────────────────────────────┐" -ForegroundColor Yellow
-          Write-Host "│              📱 HOW TO CONNECT                    │" -ForegroundColor Yellow
-          Write-Host "├───────────────────────────────────────────────────┤" -ForegroundColor Yellow
-          Write-Host "│                                                   │" -ForegroundColor Yellow
-          Write-Host "│  1️⃣  Install Tailscale on your device            │" -ForegroundColor White
-          Write-Host "│     • Android: Play Store                         │" -ForegroundColor Gray
-          Write-Host "│     • iOS: App Store                              │" -ForegroundColor Gray
-          Write-Host "│     • Windows/Mac: tailscale.com/download         │" -ForegroundColor Gray
-          Write-Host "│                                                   │" -ForegroundColor Yellow
-          Write-Host "│  2️⃣  Login with same Tailscale account           │" -ForegroundColor White
-          Write-Host "│                                                   │" -ForegroundColor Yellow
-          Write-Host "│  3️⃣  Install RDP client:                         │" -ForegroundColor White
-          Write-Host "│     • Android: Microsoft Remote Desktop           │" -ForegroundColor Gray
-          Write-Host "│     • iOS: Microsoft Remote Desktop               │" -ForegroundColor Gray
-          Write-Host "│     • Windows: Built-in (mstsc.exe)               │" -ForegroundColor Gray
-          Write-Host "│     • Mac: Microsoft Remote Desktop               │" -ForegroundColor Gray
-          Write-Host "│                                                   │" -ForegroundColor Yellow
-          Write-Host "│  4️⃣  Connect using details above                 │" -ForegroundColor White
-          Write-Host "│                                                   │" -ForegroundColor Yellow
-          Write-Host "└───────────────────────────────────────────────────┘" -ForegroundColor Yellow
-          Write-Host ""
-          Write-Host "┌───────────────────────────────────────────────────┐" -ForegroundColor Magenta
-          Write-Host "│              💡 TIPS FOR BEST EXPERIENCE          │" -ForegroundColor Magenta
-          Write-Host "├───────────────────────────────────────────────────┤" -ForegroundColor Magenta
-          Write-Host "│                                                   │" -ForegroundColor Magenta
-          Write-Host "│  ✨ Use WiFi connection for stability             │" -ForegroundColor White
-          Write-Host "│  ✨ Landscape mode recommended for editing        │" -ForegroundColor White
-          Write-Host "│  ✨ Close other apps to reduce lag                │" -ForegroundColor White
-          Write-Host "│  ✨ Save your work frequently                     │" -ForegroundColor White
-          Write-Host "│  ✨ Use low graphics in Roblox Studio settings    │" -ForegroundColor White
-          Write-Host "│                                                   │" -ForegroundColor Magenta
-          Write-Host "└───────────────────────────────────────────────────┘" -ForegroundColor Magenta
-          Write-Host ""
-          Write-Host "🚀 Happy Building in Roblox Studio! 🚀" -ForegroundColor Green
-          Write-Host ""
+          Write-Host "┌────────────────────────────────────────────┐" -ForegroundColor Cyan
+          Write-Host "│       📱 RDP ULTRA LIGHT - READY!          │" -ForegroundColor Cyan
+          Write-Host "├────────────────────────────────────────────┤" -ForegroundColor Cyan
+          Write-Host "│ 🌐  IP: $env:TAILSCALE_IP" -ForegroundColor White
+          Write-Host "│ 👤  User: MOBILE-RDP" -ForegroundColor White
+          Write-Host "│ 🔐  Pass: $password" -ForegroundColor White
+          Write-Host "│ 📍  Port: 3389" -ForegroundColor White
+          Write-Host "│ ⏰  Durasi: $displayTime" -ForegroundColor White
+          Write-Host "│ 🕐  Start: $($startTime.ToString('HH:mm:ss'))" -ForegroundColor White
+          Write-Host "│ 🕐  End: $($endTime.ToString('HH:mm:ss'))" -ForegroundColor White
+          Write-Host "├────────────────────────────────────────────┤" -ForegroundColor Cyan
+          Write-Host "│ ⚡ ULTRA LIGHT SETTINGS:                   │" -ForegroundColor Yellow
+          Write-Host "│   • Resolution: 1024x768                    │" -ForegroundColor Green
+          Write-Host "│   • Color: 16-bit                          │" -ForegroundColor Green
+          Write-Host "│   • Compression: ON                        │" -ForegroundColor Green
+          Write-Host "│   • Visual Effects: OFF                    │" -ForegroundColor Green
+          Write-Host "│   • Optimized for Mobile                   │" -ForegroundColor Green
+          Write-Host "├────────────────────────────────────────────┤" -ForegroundColor Cyan
+          Write-Host "│ 📱 TIPS UNTUK HP:                          │" -ForegroundColor Cyan
+          Write-Host "│   • Gunakan WiFi untuk koneksi stabil       │" -ForegroundColor Yellow
+          Write-Host "│   • Matikan notifikasi saat RDP aktif       │" -ForegroundColor Yellow
+          Write-Host "│   • Mode landscape lebih nyaman             │" -ForegroundColor Yellow
+          Write-Host "└────────────────────────────────────────────┘" -ForegroundColor Cyan
           
           echo "TOTAL_MINUTES=$totalMinutes" >> $env:GITHUB_ENV
-          echo "START_TIME=$($startTime.ToString('yyyy-MM-dd HH:mm:ss'))" >> $env:GITHUB_ENV
-          echo "END_TIME=$($endTime.ToString('yyyy-MM-dd HH:mm:ss'))" >> $env:GITHUB_ENV
 
-      # KEEP ALIVE WITH MONITORING
-      - name: ⏳ KEEP ALIVE & MONITOR
+      # KEEP ALIVE WITH AUTO-RESTART
+      - name: ⏳ KEEP ALIVE
         run: |
-          $totalMinutes = [int]$env:TOTAL_MINUTES
-          $startTime = [DateTime]::ParseExact($env:START_TIME, 'yyyy-MM-dd HH:mm:ss', $null)
-          $endTime = [DateTime]::ParseExact($env:END_TIME, 'yyyy-MM-dd HH:mm:ss', $null)
+          $password = Get-Content $env:TEMP\rdp_pass.txt -ErrorAction SilentlyContinue
+          $totalMinutes = $env:TOTAL_MINUTES
+          
+          $timeZone = [System.TimeZoneInfo]::FindSystemTimeZoneById("SE Asia Standard Time")
+          $startTime = [System.TimeZoneInfo]::ConvertTimeFromUtc((Get-Date).ToUniversalTime(), $timeZone)
+          $endTime = $startTime.AddMinutes($totalMinutes)
           
           Write-Host ""
-          Write-Host "═══════════════════════════════════════════" -ForegroundColor Cyan
-          Write-Host "    ⏳ SESSION MONITORING & KEEP ALIVE" -ForegroundColor Cyan
-          Write-Host "═══════════════════════════════════════════" -ForegroundColor Cyan
-          Write-Host ""
-          Write-Host "🔗 Tailscale IP: $env:TAILSCALE_IP" -ForegroundColor Green
-          Write-Host "🎮 Mode: ${{ github.event.inputs.performance_mode }}" -ForegroundColor Yellow
-          Write-Host "⏰ Duration: $totalMinutes minutes" -ForegroundColor Magenta
-          Write-Host ""
-          Write-Host "🔄 Starting monitoring services..." -ForegroundColor Cyan
+          Write-Host "🔄 MAINTAINING SESSION..." -ForegroundColor Yellow
+          Write-Host "💎 Mode: ULTRA LIGHT" -ForegroundColor Magenta
+          Write-Host "🔗 IP: $env:TAILSCALE_IP" -ForegroundColor Cyan
           Write-Host ""
           
-          # Monitor script for RDP service
+          # Monitor script
           $monitorScript = {
               while ($true) {
-                  try {
-                      # Check RDP service
-                      $termService = Get-Service -Name TermService -ErrorAction SilentlyContinue
-                      if ($termService.Status -ne 'Running') {
-                          Start-Service -Name TermService -ErrorAction SilentlyContinue
-                      }
-                      
-                      # Check Tailscale
-                      $tailscaleService = Get-Service -Name Tailscale -ErrorAction SilentlyContinue
-                      if ($tailscaleService -and $tailscaleService.Status -ne 'Running') {
-                          Start-Service -Name Tailscale -ErrorAction SilentlyContinue
-                      }
-                      
-                  } catch {
-                      # Continue on error
+                  $termService = Get-Service -Name TermService -ErrorAction SilentlyContinue
+                  if ($termService.Status -ne 'Running') {
+                      Start-Service -Name TermService -ErrorAction SilentlyContinue
                   }
-                  
                   Start-Sleep -Seconds 60
               }
           }
           
-          # Start monitor job
-          $monitorJob = Start-Job -ScriptBlock $monitorScript -Name "ServiceMonitor"
-          Write-Host "✓ Service monitor started" -ForegroundColor Green
+          Start-Job -ScriptBlock $monitorScript -Name "Monitor"
           
-          # Resource monitor script
-          $resourceScript = {
-              param($interval)
-              while ($true) {
-                  try {
-                      $os = Get-WmiObject Win32_OperatingSystem
-                      $freeRAM = [math]::Round($os.FreePhysicalMemory/1MB, 2)
-                      $disk = Get-PSDrive C
-                      $freeDisk = [math]::Round($disk.Free/1GB, 2)
-                      
-                      $timestamp = Get-Date -Format "HH:mm:ss"
-                      Write-Host "[$timestamp] 🧠 RAM: $freeRAM GB free | 💾 Disk: $freeDisk GB free" -ForegroundColor Gray
-                  } catch {
-                      # Continue
-                  }
-                  Start-Sleep -Seconds $interval
-              }
-          }
-          
-          # Start resource monitor (every 5 minutes)
-          $resourceJob = Start-Job -ScriptBlock $resourceScript -ArgumentList 300 -Name "ResourceMonitor"
-          Write-Host "✓ Resource monitor started" -ForegroundColor Green
-          Write-Host ""
-          
-          # Progress display
-          Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" -ForegroundColor Cyan
-          Write-Host ""
-          
+          # Timer
           $frames = @('⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏')
-          $colors = @('Red', 'Yellow', 'Green', 'Cyan', 'Blue', 'Magenta', 'White')
-          $barColors = @('Red', 'DarkYellow', 'Yellow', 'Green', 'Cyan')
-          
-          $lastResourceCheck = Get-Date
-          $checkInterval = 300 # 5 minutes
+          $colors = @('Red', 'Yellow', 'Green', 'Cyan', 'Blue', 'Magenta')
           
           do {
-              $currentTime = Get-Date
-              $elapsed = ($currentTime - $startTime).TotalMinutes
-              $remaining = ($endTime - $currentTime).TotalMinutes
+              $currentTime = [System.TimeZoneInfo]::ConvertTimeFromUtc((Get-Date).ToUniversalTime(), $timeZone)
+              $remaining = $endTime - $currentTime
               
-              if ($remaining -lt 0) { $remaining = 0 }
+              $hours = [math]::Max(0, [math]::Floor($remaining.TotalHours))
+              $minutes = [math]::Max(0, [math]::Floor($remaining.TotalMinutes % 60))
+              $seconds = [math]::Max(0, [math]::Floor($remaining.TotalSeconds % 60))
               
-              $hours = [math]::Floor($remaining / 60)
-              $minutes = [math]::Floor($remaining % 60)
-              $seconds = [math]::Floor(($remaining * 60) % 60)
-              
-              # Progress bar
-              $progress = [math]::Min(100, ($elapsed / $totalMinutes) * 100)
-              $barLength = 30
-              $filled = [math]::Floor(($progress / 100) * $barLength)
-              $empty = $barLength - $filled
-              
-              # Color based on time remaining
-              $barColorIndex = [math]::Min(4, [math]::Floor($progress / 25))
-              $barColor = $barColors[$barColorIndex]
-              
-              $bar = ('[' + ('█' * $filled) + ('░' * $empty) + ']')
-              
-              # Animation frame
               $frame = $frames[([int](Get-Date).Second) % $frames.Length]
-              $frameColor = $colors[([int](Get-Date).Second) % $colors.Length]
+              $color = $colors[([int](Get-Date).Minute) % $colors.Length]
               
-              # Display
-              $timeStr = "{0:D2}h {1:D2}m {2:D2}s" -f $hours, $minutes, $seconds
-              $progressStr = "{0:F1}%" -f $progress
-              
-              Write-Host "`r$frame " -NoNewline -ForegroundColor $frameColor
-              Write-Host "$bar " -NoNewline -ForegroundColor $barColor
-              Write-Host "$progressStr " -NoNewline -ForegroundColor White
-              Write-Host "⏰ $timeStr" -NoNewline -ForegroundColor Cyan
-              
-              # Check resource every 5 minutes
-              if (($currentTime - $lastResourceCheck).TotalSeconds -ge $checkInterval) {
-                  Write-Host "" # New line
-                  try {
-                      $os = Get-WmiObject Win32_OperatingSystem -ErrorAction SilentlyContinue
-                      if ($os) {
-                          $freeRAM = [math]::Round($os.FreePhysicalMemory/1MB, 2)
-                          $disk = Get-PSDrive C -ErrorAction SilentlyContinue
-                          if ($disk) {
-                              $freeDisk = [math]::Round($disk.Free/1GB, 2)
-                              Write-Host "📊 Resources: 🧠 $freeRAM GB RAM free | 💾 $freeDisk GB disk free" -ForegroundColor Gray
-                          }
-                      }
-                  } catch {
-                      # Continue on error
-                  }
-                  $lastResourceCheck = $currentTime
-                  Write-Host "`r$frame " -NoNewline -ForegroundColor $frameColor
-                  Write-Host "$bar " -NoNewline -ForegroundColor $barColor
-                  Write-Host "$progressStr " -NoNewline -ForegroundColor White
-                  Write-Host "⏰ $timeStr" -NoNewline -ForegroundColor Cyan
-              }
+              Write-Host "`r$frame [$($currentTime.ToString('HH:mm:ss'))] ⏰ $hours h $minutes m $seconds s" -NoNewline -ForegroundColor $color
               
               Start-Sleep -Seconds 5
               
-          } while ($remaining -gt 0)
+          } while ($remaining.TotalSeconds -gt 0)
           
           Write-Host ""
-          Write-Host ""
-          Write-Host "═══════════════════════════════════════════" -ForegroundColor Green
-          Write-Host "        ✅ SESSION COMPLETED!" -ForegroundColor Green
-          Write-Host "═══════════════════════════════════════════" -ForegroundColor Green
-          Write-Host ""
+          Write-Host "🎯 SESSION COMPLETED!" -ForegroundColor Green
           
-          # Stop monitoring jobs
-          Get-Job | Stop-Job -PassThru | Remove-Job -Force -ErrorAction SilentlyContinue
+          Get-Job -Name "Monitor" -ErrorAction SilentlyContinue | Stop-Job -PassThru | Remove-Job -Force
 
       # CLEANUP
-      - name: 🧹 CLEANUP & DISCONNECT
+      - name: 🧹 CLEANUP
         if: always()
         run: |
           Write-Host ""
-          Write-Host "═══════════════════════════════════════════" -ForegroundColor Yellow
-          Write-Host "          🧹 CLEANUP & DISCONNECT" -ForegroundColor Yellow
-          Write-Host "═══════════════════════════════════════════" -ForegroundColor Yellow
-          Write-Host ""
+          Write-Host "🧹 CLEANING UP..." -ForegroundColor Yellow
           
-          Write-Host "🗑️  Removing sensitive files..." -ForegroundColor Cyan
-          Remove-Item "$env:TEMP\rdp_credentials.txt" -Force -ErrorAction SilentlyContinue
-          Remove-Item "$env:TEMP\roblox-studio-rdp.rdp" -Force -ErrorAction SilentlyContinue
-          Write-Host "  ✓ Files removed" -ForegroundColor Green
-          
-          Write-Host ""
-          Write-Host "👤 Disabling user account..." -ForegroundColor Cyan
-          Disable-LocalUser -Name $env:RDP_USER -ErrorAction SilentlyContinue
-          Write-Host "  ✓ User disabled" -ForegroundColor Green
-          
-          Write-Host ""
-          Write-Host "🌐 Disconnecting Tailscale..." -ForegroundColor Cyan
-          $tailscalePath = "$env:ProgramFiles\Tailscale\tailscale.exe"
-          if (Test-Path $tailscalePath) {
-              & $tailscalePath down --accept-risk=all 2>&1 | Out-Null
-              Write-Host "  ✓ Tailscale disconnected" -ForegroundColor Green
-          }
-          
-          Write-Host ""
-          Write-Host "🔥 Removing firewall rules..." -ForegroundColor Cyan
-          netsh advfirewall firewall delete rule name="RDP-Roblox-In" 2>$null | Out-Null
-          netsh advfirewall firewall delete rule name="RDP-Roblox-Out" 2>$null | Out-Null
-          Write-Host "  ✓ Firewall rules removed" -ForegroundColor Green
-          
-          Write-Host ""
-          Write-Host "🛑 Disabling RDP..." -ForegroundColor Cyan
+          Remove-Item "$env:TEMP\rdp_pass.txt" -ErrorAction SilentlyContinue
+          Remove-Item "$env:TEMP\mobile-optimized.rdp" -ErrorAction SilentlyContinue
+          Disable-LocalUser -Name "MOBILE-RDP" -ErrorAction SilentlyContinue
+          & "$env:ProgramFiles\Tailscale\tailscale.exe" down --accept-risk=all -ErrorAction SilentlyContinue
+          netsh advfirewall firewall delete rule name="RDP-UltraLight" -ErrorAction SilentlyContinue
           Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -Name "fDenyTSConnections" -Value 1 -Force -ErrorAction SilentlyContinue
-          Write-Host "  ✓ RDP disabled" -ForegroundColor Green
           
-          Write-Host ""
-          Write-Host "🧹 Stopping background jobs..." -ForegroundColor Cyan
           Get-Job | Stop-Job -PassThru | Remove-Job -Force -ErrorAction SilentlyContinue
-          Write-Host "  ✓ Jobs stopped" -ForegroundColor Green
           
-          Write-Host ""
-          Write-Host "✅ Cleanup completed successfully!" -ForegroundColor Green
-          Write-Host ""
-          Write-Host "👋 Thank you for using Roblox Studio RDP!" -ForegroundColor Cyan
-          Write-Host ""
+          Write-Host "✅ Cleanup complete!" -ForegroundColor Green
