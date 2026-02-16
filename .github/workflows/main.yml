@@ -1,41 +1,43 @@
-name: 👑 RDP GOD MODE - ROBLOX STUDIO
+name: 👑 RDP GOD MODE - TOTAL FIX 1000%
 
 on:
   workflow_dispatch:
 
 jobs:
-  Roblox-Gacor:
+  Total-Fix-Gacor:
     runs-on: windows-latest
     timeout-minutes: 1440 
 
     steps:
-      - name: 🛡️ SYSTEM TWEAK (MAX PERFORMANCE)
+      - name: 🛡️ SYSTEM TWEAK (PERFORMANCE MODE)
         run: |
+          # Paksa Performa CPU ke Paling Tinggi
           powercfg /setactive 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c
+          # Optimasi Network biar gak lag di HP
           netsh int tcp set global autotuninglevel=normal
-          # Matikan service berat
-          $services = @('wuauserv','BITS','WSearch')
-          foreach($s in $services){ Stop-Service -Name $s -Force -ErrorAction SilentlyContinue; Set-Service -Name $s -StartupType Disabled -ErrorAction SilentlyContinue }
+          netsh int tcp set global rss=enabled
 
-      - name: 🎨 GRAPHICS OPTIMIZER (GPU EMULATOR)
+      - name: 🎨 ZERO-LAG VISUAL (ROBLOX OPTIMIZED)
         run: |
-          Write-Host "⚡ Mengoptimalkan Windows untuk Rendering Software..." -ForegroundColor Magenta
-          # Force Windows prioritaskan performa daripada tampilan
+          # Mematikan semua animasi Windows agar RAM fokus ke Roblox
           reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects" /v VisualFXSetting /t REG_DWORD /d 2 /f
-          # Tweak khusus agar Windows Server mau jalanin aplikasi OpenGL/DirectX tanpa GPU
-          reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer" /v "Scaling" /t REG_DWORD /d 100 /f
+          reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services" /v ColorDepth /t REG_DWORD /d 2 /f
 
-            - name: 👤 USER & RDP SETUP (REVISED)
+      - name: 👤 USER SETUP (FIX LOGIN)
         run: |
+          # PASSWORD BARU (Wajib ada Huruf Besar, Kecil, Angka, & Simbol)
           $pass = "P@ssw0rdGacor123!"
           $sPass = ConvertTo-SecureString $pass -AsPlainText -Force
-          # Hapus user lama jika ada
-          Remove-LocalUser -Name "ROBLOX-USER" -ErrorAction SilentlyContinue
-          # Buat user baru
-          New-LocalUser -Name "ROBLOX-USER" -Password $sPass -AccountNeverExpires
-          Add-LocalGroupMember -Group "Administrators" -Member "ROBLOX-USER"
+          
+          # Hapus user lama (jika ada) & buat yang baru
+          net user ROBLOX_USER "P@ssw0rdGacor123!" /add
+          net localgroup Administrators ROBLOX_USER /add
+          
+          # Aktifkan Akses RDP
           Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -Name "fDenyTSConnections" -Value 0
           Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -Name "UserAuthentication" -Value 0
+          
+          Write-Host "✅ User ROBLOX_USER berhasil dibuat!" -ForegroundColor Green
 
       - name: 🌐 TAILSCALE TUNNEL
         env:
@@ -43,24 +45,35 @@ jobs:
         run: |
           Invoke-WebRequest -Uri "https://pkgs.tailscale.com/stable/tailscale-setup-latest-amd64.msi" -OutFile "ts.msi"
           Start-Process msiexec.exe -ArgumentList "/i", "ts.msi", "/quiet" -Wait
-          & "C:\Program Files\Tailscale\tailscale.exe" up --authkey=$env:TAILSCALE_KEY --hostname=roblox-gacor --accept-routes
+          & "C:\Program Files\Tailscale\tailscale.exe" up --authkey=$env:TAILSCALE_KEY --hostname=god-gacor --accept-routes
           $ip = & "C:\Program Files\Tailscale\tailscale.exe" ip -4
-          echo "IP_GACOR=$ip" >> $env:GITHUB_ENV
+          echo "IP_FIX=$ip" >> $env:GITHUB_ENV
 
-      - name: 📦 INSTALL ROBLOX STUDIO (AUTO)
+      - name: 📦 ROBLOX STUDIO PRE-INSTALLER
         run: |
-          Write-Host "📥 Mendownload Roblox Studio..." -ForegroundColor Cyan
+          # Download Installer Roblox Studio ke Desktop
           $Url = "https://setup.rbxcdn.com/RobloxStudioLauncherBeta.exe"
           Invoke-WebRequest -Uri $Url -OutFile "$env:USERPROFILE\Desktop\RobloxStudio.exe"
-          Write-Host "✅ Installer sudah siap di Desktop!" -ForegroundColor Green
 
-      - name: 🔄 MONITORING 24/7
+      - name: 🔄 MONITORING & AUTO-RESTART
         env:
           MY_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
+          Write-Host "===================================="
+          Write-Host "🚀 RDP FIX 1000% READY!" -ForegroundColor Green
+          Write-Host "🌐 IP: $env:IP_FIX" -ForegroundColor Cyan
+          Write-Host "👤 User: ROBLOX_USER" -ForegroundColor White
+          Write-Host "🔐 Pass: P@ssw0rdGacor123!" -ForegroundColor White
+          Write-Host "===================================="
+          
           $endTime = (Get-Date).AddHours(23).AddMinutes(50)
+          $restartAt = $endTime.AddMinutes(-15)
+
           while ((Get-Date) -lt $endTime) {
-              # Menjaga proses RDP tetap prioritas tinggi
-              Get-Process | Where-Object {$_.Name -like "*Roblox*"} | ForEach-Object { $_.PriorityClass = 'High' }
+              if ((Get-Date) -gt $restartAt -and $env:MY_TOKEN) {
+                  $url = "https://api.github.com/repos/${{ github.repository }}/actions/workflows/${{ github.workflow_id }}/dispatches"
+                  Invoke-RestMethod -Uri $url -Method Post -Headers @{"Authorization"="Bearer $env:MY_TOKEN"} -Body (@{ref="main"}|ConvertTo-Json) -ContentType "application/json"
+                  break
+              }
               Start-Sleep -Seconds 60
           }
