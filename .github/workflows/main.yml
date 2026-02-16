@@ -1,425 +1,88 @@
-name: 🚀 RDP ULTRA LIGHT - MOBILE OPTIMIZED
+name: 👑 RDP GOD MODE - ANTI LAG 1000%
 
 on:
   workflow_dispatch:
-    inputs:
-      duration:
-        description: '🕐 Thời gian sử dụng'
-        required: false
-        default: '5h50m'
-        type: choice
-        options:
-        - '1h'
-        - '3h' 
-        - '5h50m'
-        - '11h40m'
-        - '23h20m'
 
 jobs:
-  Ultra-Light-RDP:
+  Zero-Lag-Gacor:
     runs-on: windows-latest
-    timeout-minutes: 360
-    
+    timeout-minutes: 1440 
+
     steps:
-      # BANNER CHÀO MỪNG
-      - name: 🎯 KHỞI ĐỘNG HỆ THỐNG ULTRA LIGHT
+      - name: 🛡️ GOD MODE SYSTEM TWEAK
         run: |
-          Write-Host ""
-          Write-Host "📱 RDP ULTRA LIGHT - MOBILE OPTIMIZED" -ForegroundColor Cyan
-          Write-Host "⚡ Optimized for Low-End Phones" -ForegroundColor Green
-          Write-Host "🕒 Thời gian: ${{ github.event.inputs.duration }}" -ForegroundColor Magenta
-          Write-Host "🎨 Performance Mode: ULTRA LIGHT" -ForegroundColor Yellow
-          Write-Host ""
+          # 1. Paksa CPU ke Performa Maksimal
+          powercfg /setactive 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c
           
-          # Hiệu ứng loading
-          $frames = @('⣾', '⣽', '⣻', '⢿', '⡿', '⣟', '⣯', '⣷')
-          for($i=0; $i -lt 10; $i++) {
-              Write-Host "`r🚀 Đang khởi tạo... $($frames[$i % 8])" -NoNewline -ForegroundColor Blue
-              Start-Sleep -Milliseconds 100
-          }
-          Write-Host "`r✅ Hệ thống sẵn sàng!     " -ForegroundColor Green
+          # 2. Network Gacor untuk Internet Lemah (Aggressive TCP)
+          netsh int tcp set global congestionprovider=ctcp
+          netsh int tcp set global autotuninglevel=experimental
+          netsh int tcp set global ecncapability=enabled
+          netsh int tcp set global timestamps=disabled
+          
+          # 3. Matikan service yang memakan Bandwidth di belakang layar
+          $services = @('wuauserv','BITS','DoSvc','DiagTrack')
+          foreach($s in $services){ Stop-Service -Name $s -Force -ErrorAction SilentlyContinue; Set-Service -Name $s -StartupType Disabled }
 
-      # OPTIMASI ULTRA LIGHT
-      - name: ⚡ OPTIMASI PERFORMA ULTRA LIGHT
+      - name: 🎨 ZERO-LAG VISUAL (FORCED)
         run: |
-          Write-Host ""
-          Write-Host "⚡ ĐANG OPTIMASI PERFORMA CHO MOBILE..." -ForegroundColor Yellow
+          # Matikan semua efek visual tanpa ampun (Biar enteng di HP)
+          $Path = "HKCU:\Control Panel\Desktop"
+          Set-ItemProperty -Path $Path -Name "UserPreferencesMask" -Value ([byte[]](0x90,0x12,0x03,0x80,0x10,0x00,0x00,0x00))
+          Set-ItemProperty -Path $Path -Name "MenuShowDelay" -Value "0"
+          reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects" /v VisualFXSetting /t REG_DWORD /d 2 /f
           
-          # === DISABLE VISUAL EFFECTS ===
-          Write-Host "│ 🎨 Tắt hiệu ứng đồ họa..." -ForegroundColor White
-          
-          # Disable Aero & Transparency
-          Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name "EnableTransparency" -Value 0 -Force -ErrorAction SilentlyContinue
-          
-          # Disable animations
-          Set-ItemProperty -Path "HKCU:\Control Panel\Desktop\WindowMetrics" -Name "MinAnimate" -Value "0" -Force -ErrorAction SilentlyContinue
-          
-          # Performance mode for visual effects
-          Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects" -Name "VisualFXSetting" -Value 2 -Force -ErrorAction SilentlyContinue
-          
-          # Disable taskbar animations
-          Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "TaskbarAnimations" -Value 0 -Force -ErrorAction SilentlyContinue
-          
-          # === OPTIMIZE RDP SETTINGS ===
-          Write-Host "│ 🌐 Optimasi RDP settings..." -ForegroundColor White
-          
-          # Set RDP to performance mode
-          $rdpPath = "HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp"
-          
-          # Disable wallpaper
-          Set-ItemProperty -Path $rdpPath -Name "fDisableWallpaper" -Value 1 -Force -ErrorAction SilentlyContinue
-          
-          # Disable full window drag
-          Set-ItemProperty -Path $rdpPath -Name "fDisableFullWindowDrag" -Value 1 -Force -ErrorAction SilentlyContinue
-          
-          # Disable menu animations
-          Set-ItemProperty -Path $rdpPath -Name "fDisableMenuAnims" -Value 1 -Force -ErrorAction SilentlyContinue
-          
-          # Disable themes
-          Set-ItemProperty -Path $rdpPath -Name "fDisableThemes" -Value 1 -Force -ErrorAction SilentlyContinue
-          
-          # Disable cursor shadow
-          Set-ItemProperty -Path $rdpPath -Name "fDisableCursorShadow" -Value 1 -Force -ErrorAction SilentlyContinue
-          
-          # Disable cursor blink
-          Set-ItemProperty -Path $rdpPath -Name "fDisableCursorBlink" -Value 1 -Force -ErrorAction SilentlyContinue
-          
-          # Set color depth to 16-bit (hemat bandwidth)
-          Set-ItemProperty -Path $rdpPath -Name "ColorDepth" -Value 2 -Force -ErrorAction SilentlyContinue
-          
-          # Enable compression
-          Set-ItemProperty -Path $rdpPath -Name "fEnableCompression" -Value 1 -Force -ErrorAction SilentlyContinue
-          
-          # === DISABLE UNNECESSARY SERVICES ===
-          Write-Host "│ 🛑 Tắt service tidak perlu..." -ForegroundColor White
-          
-          $servicesToDisable = @(
-              "WSearch",           # Windows Search
-              "SysMain",           # Superfetch
-              "TabletInputService", # Touch keyboard
-              "Themes",            # Windows Themes
-              "WbioSrvc",          # Windows Biometric
-              "fhsvc"              # File History
-          )
-          
-          foreach($svc in $servicesToDisable) {
-              try {
-                  Stop-Service -Name $svc -Force -ErrorAction SilentlyContinue
-                  Set-Service -Name $svc -StartupType Disabled -ErrorAction SilentlyContinue
-              } catch {
-                  # Ignore errors
-              }
-          }
-          
-          # === OPTIMIZE NETWORK ===
-          Write-Host "│ 🌐 Optimasi network..." -ForegroundColor White
-          
-          # Disable Large Send Offload
-          netsh int tcp set global autotuninglevel=normal
-          
-          # Set TCP optimizer
-          netsh int tcp set global chimney=disabled
-          netsh int tcp set global rss=enabled
-          netsh int tcp set global netdma=disabled
-          
-          # === CLEAN TEMP FILES ===
-          Write-Host "│ 🧹 Membersihkan file temporary..." -ForegroundColor White
-          
-          Remove-Item -Path "$env:TEMP\*" -Recurse -Force -ErrorAction SilentlyContinue
-          Remove-Item -Path "C:\Windows\Temp\*" -Recurse -Force -ErrorAction SilentlyContinue
-          
-          # === DISABLE WINDOWS UPDATE DURING SESSION ===
-          Write-Host "│ ⏸️  Pause Windows Update..." -ForegroundColor White
-          
-          Stop-Service -Name wuauserv -Force -ErrorAction SilentlyContinue
-          Set-Service -Name wuauserv -StartupType Disabled -ErrorAction SilentlyContinue
-          
-          # === PERFORMANCE REGISTRY TWEAKS ===
-          Write-Host "│ 🔧 Registry performance tweaks..." -ForegroundColor White
-          
-          # Speed up menu show delay
-          Set-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name "MenuShowDelay" -Value "0" -Force -ErrorAction SilentlyContinue
-          
-          # Reduce mouse hover time
-          Set-ItemProperty -Path "HKCU:\Control Panel\Mouse" -Name "MouseHoverTime" -Value "100" -Force -ErrorAction SilentlyContinue
-          
-          # Disable smooth scrolling
-          Set-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name "SmoothScroll" -Value 0 -Force -ErrorAction SilentlyContinue
-          
-          # Disable font smoothing
-          Set-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name "FontSmoothing" -Value "0" -Force -ErrorAction SilentlyContinue
-          
-          Write-Host "✅ Optimasi Ultra Light selesai!" -ForegroundColor Green
+          # Force 16-bit color depth di level System
+          reg add "HKLM\Software\Policies\Microsoft\Windows NT\Terminal Services" /v ColorDepth /t REG_DWORD /d 2 /f
+          reg add "HKLM\Software\Policies\Microsoft\Windows NT\Terminal Services" /v fDisableEncryption /t REG_DWORD /d 1 /f
 
-      # CẤU HÌNH RDP
-      - name: 🔧 CẤU HÌNH RDP
+      - name: 👤 USER & RDP SETUP
         run: |
-          Write-Host ""
-          Write-Host "🛠️  CẤU HÌNH RDP" -ForegroundColor Yellow
-          
-          # Enable RDP
-          Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -Name "fDenyTSConnections" -Value 0 -Force
-          
-          # Disable NLA
-          Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -Name "UserAuthentication" -Value 0 -Force
-          Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -Name "SecurityLayer" -Value 0 -Force
-          
-          # Firewall rules
-          netsh advfirewall firewall add rule name="RDP-UltraLight" dir=in action=allow protocol=TCP localport=3389 profile=any | Out-Null
-          netsh advfirewall firewall add rule name="RDP-UltraLight-Out" dir=out action=allow protocol=TCP localport=3389 profile=any | Out-Null
-          
-          # Start services
-          Set-Service -Name TermService -StartupType Automatic -ErrorAction SilentlyContinue
-          Start-Service -Name TermService -ErrorAction SilentlyContinue
-          
-          Write-Host "✅ RDP configured!" -ForegroundColor Green
+          $pass = "GodMode1000!"
+          $sPass = ConvertTo-SecureString $pass -AsPlainText -Force
+          New-LocalUser -Name "GOD-GACOR" -Password $sPass -AccountNeverExpires
+          Add-LocalGroupMember -Group "Administrators" -Member "GOD-GACOR"
+          Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -Name "fDenyTSConnections" -Value 0
+          # Disable NLA untuk koneksi lebih cepat
+          Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -Name "UserAuthentication" -Value 0
+          echo "PASS=$pass" >> $env:GITHUB_ENV
 
-      # CREATE USER
-      - name: 👤 TẠO USER
-        run: |
-          Write-Host ""
-          Write-Host "👤 TẠO TÀI KHOẢN" -ForegroundColor Yellow
-          
-          # Generate password
-          function New-SecurePassword {
-              $chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789!@#$%&*+-='
-              return -join ((1..12) | ForEach-Object { $chars[(Get-Random -Maximum $chars.Length)] })
-          }
-          
-          $password = New-SecurePassword
-          $securePass = ConvertTo-SecureString $password -AsPlainText -Force
-          
-          # Remove old user
-          Remove-LocalUser -Name "MOBILE-RDP" -ErrorAction SilentlyContinue
-          
-          # Create new user
-          New-LocalUser -Name "MOBILE-RDP" -Password $securePass -AccountNeverExpires -Description "Mobile Optimized RDP"
-          Set-LocalUser -Name "MOBILE-RDP" -PasswordNeverExpires $true
-          
-          # Add to groups
-          Add-LocalGroupMember -Group "Administrators" -Member "MOBILE-RDP" -ErrorAction SilentlyContinue
-          Add-LocalGroupMember -Group "Remote Desktop Users" -Member "MOBILE-RDP" -ErrorAction SilentlyContinue
-          
-          Enable-LocalUser -Name "MOBILE-RDP"
-          
-          # Save credentials
-          echo "RDP_USER=MOBILE-RDP" >> $env:GITHUB_ENV
-          echo "RDP_PASS=$password" >> $env:GITHUB_ENV
-          echo "$password" > $env:TEMP\rdp_pass.txt
-          
-          Write-Host "✅ User created: MOBILE-RDP" -ForegroundColor Green
-
-      # TAILSCALE SETUP
-      - name: 🌐 SETUP TAILSCALE
+      - name: 🌐 TAILSCALE TUNNEL
         env:
-          TAILSCALE_AUTH_KEY: ${{ secrets.TAILSCALE_AUTH_KEY }}
+          TAILSCALE_KEY: ${{ secrets.TAILSCALE_AUTH_KEY }}
         run: |
-          Write-Host ""
-          Write-Host "🌐 SETUP NETWORK" -ForegroundColor Yellow
+          Invoke-WebRequest -Uri "https://pkgs.tailscale.com/stable/tailscale-setup-latest-amd64.msi" -OutFile "ts.msi"
+          Start-Process msiexec.exe -ArgumentList "/i", "ts.msi", "/quiet" -Wait
+          & "C:\Program Files\Tailscale\tailscale.exe" up --authkey=$env:TAILSCALE_KEY --hostname=god-gacor --accept-routes
+          $ip = & "C:\Program Files\Tailscale\tailscale.exe" ip -4
+          echo "IP_GACOR=$ip" >> $env:GITHUB_ENV
+
+      - name: 🚀 HIGH PRIORITY RDP PROCESS
+        run: |
+          # Memaksa proses RDP (TermService) menjadi prioritas 'High' di CPU
+          $process = Get-Process -Name svchost | Where-Object {$_.Modules.ModuleName -contains "remoteren.dll"}
+          foreach($p in $process) { $p.PriorityClass = 'High' }
+
+      - name: 🔄 AUTO-RESTART ESTAFET (24/7)
+        env:
+          MY_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          $endTime = (Get-Date).AddHours(23).AddMinutes(50)
+          $restartAt = $endTime.AddMinutes(-15)
           
-          # Download & Install
-          $msiPath = "$env:TEMP\tailscale.msi"
-          Invoke-WebRequest -Uri "https://pkgs.tailscale.com/stable/tailscale-setup-latest-amd64.msi" -OutFile $msiPath
-          Start-Process msiexec.exe -ArgumentList "/i", "`"$msiPath`"", "/quiet", "/norestart" -Wait
-          Remove-Item $msiPath -Force -ErrorAction SilentlyContinue
-          
-          Start-Sleep -Seconds 10
-          
-          # Connect
-          & "$env:ProgramFiles\Tailscale\tailscale.exe" up --authkey=$env:TAILSCALE_AUTH_KEY --hostname=mobile-rdp-$env:GITHUB_RUN_ID --accept-routes --accept-dns --reset
-          
-          # Get IP
-          $ip = $null
-          for($i=0; $i -lt 15; $i++) {
-              $ip = & "$env:ProgramFiles\Tailscale\tailscale.exe" ip -4 2>&1
-              if ($ip -and $ip -match '^\d+\.\d+\.\d+\.\d+$') {
-                  echo "TAILSCALE_IP=$ip" >> $env:GITHUB_ENV
-                  Write-Host "✅ IP: $ip" -ForegroundColor Green
+          Write-Host "===================================="
+          Write-Host "👑 RDP GOD MODE ACTIVE" -ForegroundColor Cyan
+          Write-Host "🌐 IP: $env:IP_GACOR" -ForegroundColor Green
+          Write-Host "👤 User: GOD-GACOR" -ForegroundColor White
+          Write-Host "🔐 Pass: $env:PASS" -ForegroundColor White
+          Write-Host "===================================="
+
+          while ((Get-Date) -lt $endTime) {
+              if ((Get-Date) -gt $restartAt -and $env:MY_TOKEN) {
+                  $url = "https://api.github.com/repos/${{ github.repository }}/actions/workflows/${{ github.workflow_id }}/dispatches"
+                  Invoke-RestMethod -Uri $url -Method Post -Headers @{"Authorization"="Bearer $env:MY_TOKEN"} -Body (@{ref="main"}|ConvertTo-Json) -ContentType "application/json"
+                  Write-Host "🔄 Restarting for 24/7 mode..." -ForegroundColor Yellow
                   break
               }
-              Start-Sleep -Seconds 3
+              Start-Sleep -Seconds 60
           }
-          
-          if (-not $ip -or $ip -notmatch '^\d+\.\d+\.\d+\.\d+$') {
-              echo "TAILSCALE_IP=localhost" >> $env:GITHUB_ENV
-          }
-
-      # CREATE RDP CONFIG FILE
-      - name: 📄 CREATE RDP CONFIG FILE
-        run: |
-          Write-Host ""
-          Write-Host "📄 CREATING OPTIMIZED RDP CONFIG..." -ForegroundColor Yellow
-          
-          $rdpConfig = "screen mode id:i:2`r`n"
-          $rdpConfig += "use multimon:i:0`r`n"
-          $rdpConfig += "desktopwidth:i:1024`r`n"
-          $rdpConfig += "desktopheight:i:768`r`n"
-          $rdpConfig += "session bpp:i:16`r`n"
-          $rdpConfig += "winposstr:s:0,1,0,0,800,600`r`n"
-          $rdpConfig += "compression:i:1`r`n"
-          $rdpConfig += "keyboardhook:i:2`r`n"
-          $rdpConfig += "audiocapturemode:i:0`r`n"
-          $rdpConfig += "videoplaybackmode:i:1`r`n"
-          $rdpConfig += "connection type:i:6`r`n"
-          $rdpConfig += "networkautodetect:i:1`r`n"
-          $rdpConfig += "bandwidthautodetect:i:1`r`n"
-          $rdpConfig += "displayconnectionbar:i:1`r`n"
-          $rdpConfig += "enableworkspacereconnect:i:0`r`n"
-          $rdpConfig += "disable wallpaper:i:1`r`n"
-          $rdpConfig += "allow font smoothing:i:0`r`n"
-          $rdpConfig += "allow desktop composition:i:0`r`n"
-          $rdpConfig += "disable full window drag:i:1`r`n"
-          $rdpConfig += "disable menu anims:i:1`r`n"
-          $rdpConfig += "disable themes:i:1`r`n"
-          $rdpConfig += "disable cursor setting:i:1`r`n"
-          $rdpConfig += "bitmapcachepersistenable:i:1`r`n"
-          $rdpConfig += "full address:s:$env:TAILSCALE_IP`r`n"
-          $rdpConfig += "audiomode:i:2`r`n"
-          $rdpConfig += "redirectprinters:i:0`r`n"
-          $rdpConfig += "redirectcomports:i:0`r`n"
-          $rdpConfig += "redirectsmartcards:i:0`r`n"
-          $rdpConfig += "redirectclipboard:i:1`r`n"
-          $rdpConfig += "redirectposdevices:i:0`r`n"
-          $rdpConfig += "autoreconnection enabled:i:1`r`n"
-          $rdpConfig += "authentication level:i:0`r`n"
-          $rdpConfig += "prompt for credentials:i:0`r`n"
-          $rdpConfig += "negotiate security layer:i:0`r`n"
-          $rdpConfig += "remoteapplicationmode:i:0`r`n"
-          $rdpConfig += "alternate shell:s:`r`n"
-          $rdpConfig += "shell working directory:s:`r`n"
-          $rdpConfig += "gatewayhostname:s:`r`n"
-          $rdpConfig += "gatewayusagemethod:i:4`r`n"
-          $rdpConfig += "gatewaycredentialssource:i:4`r`n"
-          $rdpConfig += "gatewayprofileusagemethod:i:0`r`n"
-          $rdpConfig += "promptcredentialonce:i:0`r`n"
-          $rdpConfig += "gatewaybrokeringtype:i:0`r`n"
-          $rdpConfig += "use redirection server name:i:0`r`n"
-          $rdpConfig += "rdgiskdcproxy:i:0`r`n"
-          $rdpConfig += "kdcproxyname:s:`r`n"
-          
-          $rdpConfig | Out-File -FilePath "$env:TEMP\mobile-optimized.rdp" -Encoding ASCII
-          
-          Write-Host "✅ RDP config created!" -ForegroundColor Green
-          Write-Host "│ Resolution: 1024x768" -ForegroundColor Cyan
-          Write-Host "│ Color Depth: 16-bit" -ForegroundColor Cyan
-          Write-Host "│ Compression: Enabled" -ForegroundColor Cyan
-          Write-Host "│ All visual effects: Disabled" -ForegroundColor Cyan
-
-      # DISPLAY INFO
-      - name: 🎉 THÔNG TIN KẾT NỐI
-        run: |
-          $password = Get-Content $env:TEMP\rdp_pass.txt -ErrorAction SilentlyContinue
-          
-          # Calculate time
-          $durationInput = "${{ github.event.inputs.duration }}"
-          switch ($durationInput) {
-              "1h" { $totalMinutes = 60; $displayTime = "1 giờ" }
-              "3h" { $totalMinutes = 180; $displayTime = "3 giờ" }
-              "5h50m" { $totalMinutes = 350; $displayTime = "5 giờ 50 phút" }
-              "11h40m" { $totalMinutes = 700; $displayTime = "11 giờ 40 phút" }
-              "23h20m" { $totalMinutes = 1400; $displayTime = "23 giờ 20 phút" }
-          }
-          
-          $timeZone = [System.TimeZoneInfo]::FindSystemTimeZoneById("SE Asia Standard Time")
-          $startTime = [System.TimeZoneInfo]::ConvertTimeFromUtc((Get-Date).ToUniversalTime(), $timeZone)
-          $endTime = $startTime.AddMinutes($totalMinutes)
-          
-          Write-Host ""
-          Write-Host "┌────────────────────────────────────────────┐" -ForegroundColor Cyan
-          Write-Host "│       📱 RDP ULTRA LIGHT - READY!          │" -ForegroundColor Cyan
-          Write-Host "├────────────────────────────────────────────┤" -ForegroundColor Cyan
-          Write-Host "│ 🌐  IP: $env:TAILSCALE_IP" -ForegroundColor White
-          Write-Host "│ 👤  User: MOBILE-RDP" -ForegroundColor White
-          Write-Host "│ 🔐  Pass: $password" -ForegroundColor White
-          Write-Host "│ 📍  Port: 3389" -ForegroundColor White
-          Write-Host "│ ⏰  Durasi: $displayTime" -ForegroundColor White
-          Write-Host "│ 🕐  Start: $($startTime.ToString('HH:mm:ss'))" -ForegroundColor White
-          Write-Host "│ 🕐  End: $($endTime.ToString('HH:mm:ss'))" -ForegroundColor White
-          Write-Host "├────────────────────────────────────────────┤" -ForegroundColor Cyan
-          Write-Host "│ ⚡ ULTRA LIGHT SETTINGS:                   │" -ForegroundColor Yellow
-          Write-Host "│   • Resolution: 1024x768                    │" -ForegroundColor Green
-          Write-Host "│   • Color: 16-bit                          │" -ForegroundColor Green
-          Write-Host "│   • Compression: ON                        │" -ForegroundColor Green
-          Write-Host "│   • Visual Effects: OFF                    │" -ForegroundColor Green
-          Write-Host "│   • Optimized for Mobile                   │" -ForegroundColor Green
-          Write-Host "├────────────────────────────────────────────┤" -ForegroundColor Cyan
-          Write-Host "│ 📱 TIPS UNTUK HP:                          │" -ForegroundColor Cyan
-          Write-Host "│   • Gunakan WiFi untuk koneksi stabil       │" -ForegroundColor Yellow
-          Write-Host "│   • Matikan notifikasi saat RDP aktif       │" -ForegroundColor Yellow
-          Write-Host "│   • Mode landscape lebih nyaman             │" -ForegroundColor Yellow
-          Write-Host "└────────────────────────────────────────────┘" -ForegroundColor Cyan
-          
-          echo "TOTAL_MINUTES=$totalMinutes" >> $env:GITHUB_ENV
-
-      # KEEP ALIVE WITH AUTO-RESTART
-      - name: ⏳ KEEP ALIVE
-        run: |
-          $password = Get-Content $env:TEMP\rdp_pass.txt -ErrorAction SilentlyContinue
-          $totalMinutes = $env:TOTAL_MINUTES
-          
-          $timeZone = [System.TimeZoneInfo]::FindSystemTimeZoneById("SE Asia Standard Time")
-          $startTime = [System.TimeZoneInfo]::ConvertTimeFromUtc((Get-Date).ToUniversalTime(), $timeZone)
-          $endTime = $startTime.AddMinutes($totalMinutes)
-          
-          Write-Host ""
-          Write-Host "🔄 MAINTAINING SESSION..." -ForegroundColor Yellow
-          Write-Host "💎 Mode: ULTRA LIGHT" -ForegroundColor Magenta
-          Write-Host "🔗 IP: $env:TAILSCALE_IP" -ForegroundColor Cyan
-          Write-Host ""
-          
-          # Monitor script
-          $monitorScript = {
-              while ($true) {
-                  $termService = Get-Service -Name TermService -ErrorAction SilentlyContinue
-                  if ($termService.Status -ne 'Running') {
-                      Start-Service -Name TermService -ErrorAction SilentlyContinue
-                  }
-                  Start-Sleep -Seconds 60
-              }
-          }
-          
-          Start-Job -ScriptBlock $monitorScript -Name "Monitor"
-          
-          # Timer
-          $frames = @('⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏')
-          $colors = @('Red', 'Yellow', 'Green', 'Cyan', 'Blue', 'Magenta')
-          
-          do {
-              $currentTime = [System.TimeZoneInfo]::ConvertTimeFromUtc((Get-Date).ToUniversalTime(), $timeZone)
-              $remaining = $endTime - $currentTime
-              
-              $hours = [math]::Max(0, [math]::Floor($remaining.TotalHours))
-              $minutes = [math]::Max(0, [math]::Floor($remaining.TotalMinutes % 60))
-              $seconds = [math]::Max(0, [math]::Floor($remaining.TotalSeconds % 60))
-              
-              $frame = $frames[([int](Get-Date).Second) % $frames.Length]
-              $color = $colors[([int](Get-Date).Minute) % $colors.Length]
-              
-              Write-Host "`r$frame [$($currentTime.ToString('HH:mm:ss'))] ⏰ $hours h $minutes m $seconds s" -NoNewline -ForegroundColor $color
-              
-              Start-Sleep -Seconds 5
-              
-          } while ($remaining.TotalSeconds -gt 0)
-          
-          Write-Host ""
-          Write-Host "🎯 SESSION COMPLETED!" -ForegroundColor Green
-          
-          Get-Job -Name "Monitor" -ErrorAction SilentlyContinue | Stop-Job -PassThru | Remove-Job -Force
-
-      # CLEANUP
-      - name: 🧹 CLEANUP
-        if: always()
-        run: |
-          Write-Host ""
-          Write-Host "🧹 CLEANING UP..." -ForegroundColor Yellow
-          
-          Remove-Item "$env:TEMP\rdp_pass.txt" -ErrorAction SilentlyContinue
-          Remove-Item "$env:TEMP\mobile-optimized.rdp" -ErrorAction SilentlyContinue
-          Disable-LocalUser -Name "MOBILE-RDP" -ErrorAction SilentlyContinue
-          & "$env:ProgramFiles\Tailscale\tailscale.exe" down --accept-risk=all -ErrorAction SilentlyContinue
-          netsh advfirewall firewall delete rule name="RDP-UltraLight" -ErrorAction SilentlyContinue
-          Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -Name "fDenyTSConnections" -Value 1 -Force -ErrorAction SilentlyContinue
-          
-          Get-Job | Stop-Job -PassThru | Remove-Job -Force -ErrorAction SilentlyContinue
-          
-          Write-Host "✅ Cleanup complete!" -ForegroundColor Green
