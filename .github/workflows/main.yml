@@ -9,32 +9,34 @@ jobs:
     timeout-minutes: 1440 
 
     steps:
-      - name: 🛡️ GOD MODE SYSTEM TWEAK
+      - name: 🛡️ GOD MODE SYSTEM TWEAK (FIXED)
         run: |
-          # 1. Paksa CPU ke Performa Maksimal
+          Write-Host "⚡ Optimasi CPU & Network..." -ForegroundColor Cyan
+          # 1. Set Performa Maksimal
           powercfg /setactive 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c
           
-          # 2. Network Gacor untuk Internet Lemah (Aggressive TCP)
-          netsh int tcp set global congestionprovider=ctcp
-          netsh int tcp set global autotuninglevel=experimental
+          # 2. Network Gacor (Perbaikan Parameter agar tidak Error)
+          netsh int tcp set global autotuninglevel=normal
+          netsh int tcp set global rss=enabled
           netsh int tcp set global ecncapability=enabled
-          netsh int tcp set global timestamps=disabled
           
-          # 3. Matikan service yang memakan Bandwidth di belakang layar
-          $services = @('wuauserv','BITS','DoSvc','DiagTrack')
-          foreach($s in $services){ Stop-Service -Name $s -Force -ErrorAction SilentlyContinue; Set-Service -Name $s -StartupType Disabled }
+          # 3. Matikan Service yang diizinkan saja (Biar tidak Access Denied)
+          $services = @('wuauserv','BITS','WSearch')
+          foreach($s in $services){ 
+            Stop-Service -Name $s -Force -ErrorAction SilentlyContinue
+            Set-Service -Name $s -StartupType Disabled -ErrorAction SilentlyContinue
+          }
 
       - name: 🎨 ZERO-LAG VISUAL (FORCED)
         run: |
-          # Matikan semua efek visual tanpa ampun (Biar enteng di HP)
+          Write-Host "⚡ Mematikan Visual Effects..." -ForegroundColor Magenta
           $Path = "HKCU:\Control Panel\Desktop"
+          if (!(Test-Path $Path)) { New-Item -Path $Path -Force }
           Set-ItemProperty -Path $Path -Name "UserPreferencesMask" -Value ([byte[]](0x90,0x12,0x03,0x80,0x10,0x00,0x00,0x00))
           Set-ItemProperty -Path $Path -Name "MenuShowDelay" -Value "0"
-          reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects" /v VisualFXSetting /t REG_DWORD /d 2 /f
           
-          # Force 16-bit color depth di level System
+          # Force Low Color Depth (Registry Level)
           reg add "HKLM\Software\Policies\Microsoft\Windows NT\Terminal Services" /v ColorDepth /t REG_DWORD /d 2 /f
-          reg add "HKLM\Software\Policies\Microsoft\Windows NT\Terminal Services" /v fDisableEncryption /t REG_DWORD /d 1 /f
 
       - name: 👤 USER & RDP SETUP
         run: |
@@ -42,8 +44,9 @@ jobs:
           $sPass = ConvertTo-SecureString $pass -AsPlainText -Force
           New-LocalUser -Name "GOD-GACOR" -Password $sPass -AccountNeverExpires
           Add-LocalGroupMember -Group "Administrators" -Member "GOD-GACOR"
+          
+          # Aktifkan RDP & Disable NLA agar Fast Login
           Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -Name "fDenyTSConnections" -Value 0
-          # Disable NLA untuk koneksi lebih cepat
           Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -Name "UserAuthentication" -Value 0
           echo "PASS=$pass" >> $env:GITHUB_ENV
 
@@ -57,31 +60,22 @@ jobs:
           $ip = & "C:\Program Files\Tailscale\tailscale.exe" ip -4
           echo "IP_GACOR=$ip" >> $env:GITHUB_ENV
 
-      - name: 🚀 HIGH PRIORITY RDP PROCESS
-        run: |
-          # Memaksa proses RDP (TermService) menjadi prioritas 'High' di CPU
-          $process = Get-Process -Name svchost | Where-Object {$_.Modules.ModuleName -contains "remoteren.dll"}
-          foreach($p in $process) { $p.PriorityClass = 'High' }
-
-      - name: 🔄 AUTO-RESTART ESTAFET (24/7)
+      - name: 🔄 MONITORING 24/7
         env:
           MY_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
+          Write-Host "===================================="
+          Write-Host "👑 RDP GOD MODE SUDAH FIX & AKTIF" -ForegroundColor Green
+          Write-Host "🌐 IP: $env:IP_GACOR" -ForegroundColor Cyan
+          Write-Host "===================================="
+          
           $endTime = (Get-Date).AddHours(23).AddMinutes(50)
           $restartAt = $endTime.AddMinutes(-15)
-          
-          Write-Host "===================================="
-          Write-Host "👑 RDP GOD MODE ACTIVE" -ForegroundColor Cyan
-          Write-Host "🌐 IP: $env:IP_GACOR" -ForegroundColor Green
-          Write-Host "👤 User: GOD-GACOR" -ForegroundColor White
-          Write-Host "🔐 Pass: $env:PASS" -ForegroundColor White
-          Write-Host "===================================="
 
           while ((Get-Date) -lt $endTime) {
               if ((Get-Date) -gt $restartAt -and $env:MY_TOKEN) {
                   $url = "https://api.github.com/repos/${{ github.repository }}/actions/workflows/${{ github.workflow_id }}/dispatches"
                   Invoke-RestMethod -Uri $url -Method Post -Headers @{"Authorization"="Bearer $env:MY_TOKEN"} -Body (@{ref="main"}|ConvertTo-Json) -ContentType "application/json"
-                  Write-Host "🔄 Restarting for 24/7 mode..." -ForegroundColor Yellow
                   break
               }
               Start-Sleep -Seconds 60
