@@ -1,4 +1,4 @@
-Name: 🚀 RDP ULTRA LIGHT - MOBILE OPTIMIZED
+name: 🎮 RDP OPTIMIZED FOR ROBLOX STUDIO
 
 on:
   workflow_dispatch:
@@ -9,217 +9,398 @@ on:
         default: '5h50m'
         type: choice
         options:
-        - '1h'
-        - '3h' 
+        - '3h'
         - '5h50m'
         - '11h40m'
         - '23h20m'
+      performance_mode:
+        description: '⚡ Performance Mode'
+        required: false
+        default: 'roblox-optimized'
+        type: choice
+        options:
+        - 'roblox-optimized'
+        - 'balanced'
+        - 'ultra-performance'
 
 jobs:
-  Ultra-Light-RDP:
+  Roblox-Studio-RDP:
     runs-on: windows-latest
-    timeout-minutes: 360
+    timeout-minutes: 1440
     
     steps:
-      # BANNER CHÀO MỪNG
-      - name: 🎯 KHỞI ĐỘNG HỆ THỐNG ULTRA LIGHT
+      # BANNER
+      - name: 🎯 KHỞI ĐỘNG ROBLOX STUDIO RDP
         run: |
           Write-Host ""
-          Write-Host "📱 RDP ULTRA LIGHT - MOBILE OPTIMIZED" -ForegroundColor Cyan
-          Write-Host "⚡ Optimized for Low-End Phones" -ForegroundColor Green
-          Write-Host "🕒 Thời gian: ${{ github.event.inputs.duration }}" -ForegroundColor Magenta
-          Write-Host "🎨 Performance Mode: ULTRA LIGHT" -ForegroundColor Yellow
+          Write-Host "═══════════════════════════════════════════" -ForegroundColor Cyan
+          Write-Host "   🎮 RDP OPTIMIZED FOR ROBLOX STUDIO" -ForegroundColor Yellow
+          Write-Host "═══════════════════════════════════════════" -ForegroundColor Cyan
+          Write-Host ""
+          Write-Host "⚙️  Performance: ${{ github.event.inputs.performance_mode }}" -ForegroundColor Green
+          Write-Host "⏰  Duration: ${{ github.event.inputs.duration }}" -ForegroundColor Magenta
+          Write-Host "🖥️  RAM: 7 GB | Storage: ~14 GB" -ForegroundColor White
+          Write-Host "🎨  Optimized for 3D Editing & Building" -ForegroundColor Cyan
           Write-Host ""
           
-          # Hiệu ứng loading
           $frames = @('⣾', '⣽', '⣻', '⢿', '⡿', '⣟', '⣯', '⣷')
-          for($i=0; $i -lt 10; $i++) {
-              Write-Host "`r🚀 Đang khởi tạo... $($frames[$i % 8])" -NoNewline -ForegroundColor Blue
+          for($i=0; $i -lt 12; $i++) {
+              Write-Host "`r🚀 Initializing Roblox environment... $($frames[$i % 8])" -NoNewline -ForegroundColor Blue
               Start-Sleep -Milliseconds 100
           }
-          Write-Host "`r✅ Hệ thống sẵn sàng!     " -ForegroundColor Green
-
-      # OPTIMASI ULTRA LIGHT
-      - name: ⚡ OPTIMASI PERFORMA ULTRA LIGHT
-        run: |
+          Write-Host "`r✅ System ready for Roblox Studio!          " -ForegroundColor Green
           Write-Host ""
-          Write-Host "⚡ ĐANG OPTIMASI PERFORMA CHO MOBILE..." -ForegroundColor Yellow
+
+      # SYSTEM INFO
+      - name: 📊 SYSTEM INFORMATION
+        run: |
+          Write-Host "═══════════════════════════════════════════" -ForegroundColor Yellow
+          Write-Host "           📊 SYSTEM RESOURCES" -ForegroundColor Yellow
+          Write-Host "═══════════════════════════════════════════" -ForegroundColor Yellow
           
-          # === DISABLE VISUAL EFFECTS ===
-          Write-Host "│ 🎨 Tắt hiệu ứng đồ họa..." -ForegroundColor White
+          # RAM Info
+          $os = Get-WmiObject Win32_OperatingSystem
+          $totalRAM = [math]::Round($os.TotalVisibleMemorySize/1MB, 2)
+          $freeRAM = [math]::Round($os.FreePhysicalMemory/1MB, 2)
+          $usedRAM = [math]::Round($totalRAM - $freeRAM, 2)
           
-          # Disable Aero & Transparency
-          Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name "EnableTransparency" -Value 0 -Force -ErrorAction SilentlyContinue
+          Write-Host "🧠 RAM:" -ForegroundColor Cyan
+          Write-Host "   Total: $totalRAM GB" -ForegroundColor White
+          Write-Host "   Free: $freeRAM GB" -ForegroundColor Green
+          Write-Host "   Used: $usedRAM GB" -ForegroundColor Yellow
           
-          # Disable animations
-          Set-ItemProperty -Path "HKCU:\Control Panel\Desktop\WindowMetrics" -Name "MinAnimate" -Value "0" -Force -ErrorAction SilentlyContinue
+          # CPU Info
+          $cpu = Get-WmiObject Win32_Processor
+          Write-Host ""
+          Write-Host "⚙️  CPU:" -ForegroundColor Cyan
+          Write-Host "   Name: $($cpu.Name)" -ForegroundColor White
+          Write-Host "   Cores: $($cpu.NumberOfCores)" -ForegroundColor White
+          Write-Host "   Threads: $($cpu.NumberOfLogicalProcessors)" -ForegroundColor White
           
-          # Performance mode for visual effects
-          Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects" -Name "VisualFXSetting" -Value 2 -Force -ErrorAction SilentlyContinue
+          # Disk Info
+          $disk = Get-PSDrive C
+          $freeDisk = [math]::Round($disk.Free/1GB, 2)
+          $usedDisk = [math]::Round($disk.Used/1GB, 2)
+          $totalDisk = [math]::Round(($disk.Free + $disk.Used)/1GB, 2)
           
-          # Disable taskbar animations
-          Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "TaskbarAnimations" -Value 0 -Force -ErrorAction SilentlyContinue
+          Write-Host ""
+          Write-Host "💾 Storage (C:):" -ForegroundColor Cyan
+          Write-Host "   Total: $totalDisk GB" -ForegroundColor White
+          Write-Host "   Free: $freeDisk GB" -ForegroundColor Green
+          Write-Host "   Used: $usedDisk GB" -ForegroundColor Yellow
           
-          # === OPTIMIZE RDP SETTINGS ===
-          Write-Host "│ 🌐 Optimasi RDP settings..." -ForegroundColor White
+          # GPU Info
+          $gpu = Get-WmiObject Win32_VideoController
+          Write-Host ""
+          Write-Host "🎨 Graphics:" -ForegroundColor Cyan
+          Write-Host "   $($gpu.Name)" -ForegroundColor White
+          Write-Host "   VRAM: $([math]::Round($gpu.AdapterRAM/1GB, 2)) GB" -ForegroundColor White
+          Write-Host ""
+
+      # DEEP CLEANUP
+      - name: 🧹 DEEP CLEANUP & OPTIMIZATION
+        run: |
+          Write-Host "═══════════════════════════════════════════" -ForegroundColor Yellow
+          Write-Host "    🧹 DEEP CLEANUP FOR MAX PERFORMANCE" -ForegroundColor Yellow
+          Write-Host "═══════════════════════════════════════════" -ForegroundColor Yellow
+          Write-Host ""
           
-          # Set RDP to performance mode
-          $rdpPath = "HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp"
+          # Stop unnecessary processes
+          Write-Host "⏹️  Stopping unnecessary processes..." -ForegroundColor Cyan
+          $processesToStop = @(
+              'OneDrive', 'Teams', 'Skype', 'msedge', 
+              'MicrosoftEdge*', 'SearchApp', 'SearchUI'
+          )
+          foreach($proc in $processesToStop) {
+              Get-Process -Name $proc -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
+          }
           
-          # Disable wallpaper
-          Set-ItemProperty -Path $rdpPath -Name "fDisableWallpaper" -Value 1 -Force -ErrorAction SilentlyContinue
-          
-          # Disable full window drag
-          Set-ItemProperty -Path $rdpPath -Name "fDisableFullWindowDrag" -Value 1 -Force -ErrorAction SilentlyContinue
-          
-          # Disable menu animations
-          Set-ItemProperty -Path $rdpPath -Name "fDisableMenuAnims" -Value 1 -Force -ErrorAction SilentlyContinue
-          
-          # Disable themes
-          Set-ItemProperty -Path $rdpPath -Name "fDisableThemes" -Value 1 -Force -ErrorAction SilentlyContinue
-          
-          # Disable cursor shadow
-          Set-ItemProperty -Path $rdpPath -Name "fDisableCursorShadow" -Value 1 -Force -ErrorAction SilentlyContinue
-          
-          # Disable cursor blink
-          Set-ItemProperty -Path $rdpPath -Name "fDisableCursorBlink" -Value 1 -Force -ErrorAction SilentlyContinue
-          
-          # Set color depth to 16-bit (hemat bandwidth)
-          Set-ItemProperty -Path $rdpPath -Name "ColorDepth" -Value 2 -Force -ErrorAction SilentlyContinue
-          
-          # Enable compression
-          Set-ItemProperty -Path $rdpPath -Name "fEnableCompression" -Value 1 -Force -ErrorAction SilentlyContinue
-          
-          # === DISABLE UNNECESSARY SERVICES ===
-          Write-Host "│ 🛑 Tắt service tidak perlu..." -ForegroundColor White
-          
+          # Disable services
+          Write-Host "🛑 Disabling unnecessary services..." -ForegroundColor Cyan
           $servicesToDisable = @(
-              "WSearch",           # Windows Search
-              "SysMain",           # Superfetch
-              "TabletInputService", # Touch keyboard
-              "Themes",            # Windows Themes
-              "WbioSrvc",          # Windows Biometric
-              "fhsvc"              # File History
+              'WSearch',           # Windows Search
+              'SysMain',           # Superfetch
+              'DiagTrack',         # Diagnostics
+              'TabletInputService', # Touch
+              'Themes',            # Themes
+              'WbioSrvc',          # Biometric
+              'fhsvc',             # File History
+              'MapsBroker',        # Downloaded Maps
+              'lfsvc',             # Geolocation
+              'RetailDemo',        # Retail Demo
+              'WMPNetworkSvc',     # Windows Media Player
+              'XblAuthManager',    # Xbox Live Auth
+              'XblGameSave',       # Xbox Live Game Save
+              'XboxNetApiSvc',     # Xbox Live Networking
+              'XboxGipSvc'         # Xbox Accessory
           )
           
           foreach($svc in $servicesToDisable) {
               try {
                   Stop-Service -Name $svc -Force -ErrorAction SilentlyContinue
                   Set-Service -Name $svc -StartupType Disabled -ErrorAction SilentlyContinue
+                  Write-Host "  ✓ Disabled: $svc" -ForegroundColor Green
               } catch {
-                  # Ignore errors
+                  # Ignore
               }
           }
           
-          # === OPTIMIZE NETWORK ===
-          Write-Host "│ 🌐 Optimasi network..." -ForegroundColor White
-          
-          # Disable Large Send Offload
-          netsh int tcp set global autotuninglevel=normal
-          
-          # Set TCP optimizer
-          netsh int tcp set global chimney=disabled
-          netsh int tcp set global rss=enabled
-          netsh int tcp set global netdma=disabled
-          
-          # === CLEAN TEMP FILES ===
-          Write-Host "│ 🧹 Membersihkan file temporary..." -ForegroundColor White
-          
-          Remove-Item -Path "$env:TEMP\*" -Recurse -Force -ErrorAction SilentlyContinue
-          Remove-Item -Path "C:\Windows\Temp\*" -Recurse -Force -ErrorAction SilentlyContinue
-          
-          # === DISABLE WINDOWS UPDATE DURING SESSION ===
-          Write-Host "│ ⏸️  Pause Windows Update..." -ForegroundColor White
-          
-          Stop-Service -Name wuauserv -Force -ErrorAction SilentlyContinue
-          Set-Service -Name wuauserv -StartupType Disabled -ErrorAction SilentlyContinue
-          
-          # === PERFORMANCE REGISTRY TWEAKS ===
-          Write-Host "│ 🔧 Registry performance tweaks..." -ForegroundColor White
-          
-          # Speed up menu show delay
-          Set-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name "MenuShowDelay" -Value "0" -Force -ErrorAction SilentlyContinue
-          
-          # Reduce mouse hover time
-          Set-ItemProperty -Path "HKCU:\Control Panel\Mouse" -Name "MouseHoverTime" -Value "100" -Force -ErrorAction SilentlyContinue
-          
-          # Disable smooth scrolling
-          Set-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name "SmoothScroll" -Value 0 -Force -ErrorAction SilentlyContinue
-          
-          # Disable font smoothing
-          Set-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name "FontSmoothing" -Value "0" -Force -ErrorAction SilentlyContinue
-          
-          Write-Host "✅ Optimasi Ultra Light selesai!" -ForegroundColor Green
-
-      # CẤU HÌNH RDP
-      - name: 🔧 CẤU HÌNH RDP
-        run: |
+          # Clean temp files
           Write-Host ""
-          Write-Host "🛠️  CẤU HÌNH RDP" -ForegroundColor Yellow
+          Write-Host "🗑️  Cleaning temporary files..." -ForegroundColor Cyan
           
-          # Enable RDP
-          Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -Name "fDenyTSConnections" -Value 0 -Force
+          $tempPaths = @(
+              "$env:TEMP\*",
+              "C:\Windows\Temp\*",
+              "C:\Windows\Prefetch\*",
+              "C:\Windows\SoftwareDistribution\Download\*",
+              "$env:LOCALAPPDATA\Microsoft\Windows\INetCache\*",
+              "$env:LOCALAPPDATA\Microsoft\Windows\WebCache\*",
+              "$env:LOCALAPPDATA\Temp\*"
+          )
           
-          # Disable NLA
-          Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -Name "UserAuthentication" -Value 0 -Force
-          Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -Name "SecurityLayer" -Value 0 -Force
-          
-          # Firewall rules
-          netsh advfirewall firewall add rule name="RDP-UltraLight" dir=in action=allow protocol=TCP localport=3389 profile=any | Out-Null
-          netsh advfirewall firewall add rule name="RDP-UltraLight-Out" dir=out action=allow protocol=TCP localport=3389 profile=any | Out-Null
-          
-          # Start services
-          Set-Service -Name TermService -StartupType Automatic -ErrorAction SilentlyContinue
-          Start-Service -Name TermService -ErrorAction SilentlyContinue
-          
-          Write-Host "✅ RDP configured!" -ForegroundColor Green
-
-      # CREATE USER
-      - name: 👤 TẠO USER
-        run: |
-          Write-Host ""
-          Write-Host "👤 TẠO TÀI KHOẢN" -ForegroundColor Yellow
-          
-          # Generate password
-          function New-SecurePassword {
-              $chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789!@#$%&*+-='
-              return -join ((1..12) | ForEach-Object { $chars[(Get-Random -Maximum $chars.Length)] })
+          $freedSpace = 0
+          foreach($path in $tempPaths) {
+              try {
+                  $before = (Get-ChildItem -Path ($path -replace '\\\*$', '') -Recurse -ErrorAction SilentlyContinue | Measure-Object -Property Length -Sum).Sum
+                  Remove-Item -Path $path -Recurse -Force -ErrorAction SilentlyContinue
+                  $freedSpace += $before
+              } catch {
+                  # Continue
+              }
           }
           
-          $password = New-SecurePassword
-          $securePass = ConvertTo-SecureString $password -AsPlainText -Force
+          Write-Host "  ✓ Freed: $([math]::Round($freedSpace/1MB, 2)) MB" -ForegroundColor Green
           
-          # Remove old user
-          Remove-LocalUser -Name "MOBILE-RDP" -ErrorAction SilentlyContinue
-          
-          # Create new user
-          New-LocalUser -Name "MOBILE-RDP" -Password $securePass -AccountNeverExpires -Description "Mobile Optimized RDP"
-          Set-LocalUser -Name "MOBILE-RDP" -PasswordNeverExpires $true
-          
-          # Add to groups
-          Add-LocalGroupMember -Group "Administrators" -Member "MOBILE-RDP" -ErrorAction SilentlyContinue
-          Add-LocalGroupMember -Group "Remote Desktop Users" -Member "MOBILE-RDP" -ErrorAction SilentlyContinue
-          
-          Enable-LocalUser -Name "MOBILE-RDP"
-          
-          # Save credentials
-          echo "RDP_USER=MOBILE-RDP" >> $env:GITHUB_ENV
-          echo "RDP_PASS=$password" >> $env:GITHUB_ENV
-          echo "$password" > $env:TEMP\rdp_pass.txt
-          
-          Write-Host "✅ User created: MOBILE-RDP" -ForegroundColor Green
-
-      # TAILSCALE SETUP
-      - name: 🌐 SETUP TAILSCALE
-        env:
-          TAILSCALE_AUTH_KEY: ${{ secrets.TAILSCALE_AUTH_KEY }}
-        run: |
+          # Clear event logs
           Write-Host ""
-          Write-Host "🌐 SETUP NETWORK" -ForegroundColor Yellow
+          Write-Host "📝 Clearing event logs..." -ForegroundColor Cyan
+          wevtutil el | ForEach-Object { wevtutil cl $_ 2>$null }
+          Write-Host "  ✓ Event logs cleared" -ForegroundColor Green
           
-          # Download & Install
-          $msiPath = "$env:TEMP\tailscale.msi"
-          Invoke-WebRequest -Uri "https://pkgs.tailscale.com/stable/tailscale-setup-latest-amd64.msi" -OutFile $msiPath
+          Write-Host ""
+          Write-Host "✅ Deep cleanup completed!" -ForegroundColor Green
+          Write-Host ""
+
+      # ROBLOX STUDIO OPTIMIZATION
+      - name: ⚡ ROBLOX STUDIO OPTIMIZATION
+        run: |
+          Write-Host "═══════════════════════════════════════════" -ForegroundColor Yellow
+          Write-Host "      ⚡ ROBLOX STUDIO OPTIMIZATION" -ForegroundColor Yellow
+          Write-Host "═══════════════════════════════════════════" -ForegroundColor Yellow
+          Write-Host ""
+          
+          $perfMode = "${{ github.event.inputs.performance_mode }}"
+          
+          # Set performance variables
+          switch ($perfMode) {
+              'ultra-performance' {
+                  $colorDepth = 4      # 32-bit
+                  $resolution = @(1920, 1080)
+                  $compression = 0     # No compression
+                  $visualFX = $true
+                  $fontSmooth = $true
+                  Write-Host "🚀 Mode: ULTRA PERFORMANCE (Best Quality)" -ForegroundColor Magenta
+              }
+              'balanced' {
+                  $colorDepth = 3      # 24-bit
+                  $resolution = @(1600, 900)
+                  $compression = 1
+                  $visualFX = $false
+                  $fontSmooth = $true
+                  Write-Host "⚖️  Mode: BALANCED (Quality + Speed)" -ForegroundColor Yellow
+              }
+              default { # roblox-optimized
+                  $colorDepth = 3      # 24-bit (lebih baik untuk 3D)
+                  $resolution = @(1366, 768)
+                  $compression = 1
+                  $visualFX = $false
+                  $fontSmooth = $true
+                  Write-Host "🎮 Mode: ROBLOX OPTIMIZED (Recommended)" -ForegroundColor Green
+              }
+          }
+          
+          Write-Host "   Resolution: $($resolution[0])x$($resolution[1])" -ForegroundColor Cyan
+          Write-Host "   Color Depth: $($colorDepth * 8)-bit" -ForegroundColor Cyan
+          Write-Host "   Compression: $(if($compression){'ON'}else{'OFF'})" -ForegroundColor Cyan
+          Write-Host ""
+          
+          # === VISUAL EFFECTS FOR 3D WORK ===
+          Write-Host "🎨 Configuring visual effects for 3D work..." -ForegroundColor Cyan
+          
+          if ($visualFX) {
+              # Enable visual effects for better 3D visualization
+              Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name "EnableTransparency" -Value 1 -Force -ErrorAction SilentlyContinue
+              Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects" -Name "VisualFXSetting" -Value 1 -Force -ErrorAction SilentlyContinue
+              Write-Host "  ✓ Visual effects enabled (Better for 3D)" -ForegroundColor Green
+          } else {
+              # Disable for performance
+              Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name "EnableTransparency" -Value 0 -Force -ErrorAction SilentlyContinue
+              Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects" -Name "VisualFXSetting" -Value 2 -Force -ErrorAction SilentlyContinue
+              Set-ItemProperty -Path "HKCU:\Control Panel\Desktop\WindowMetrics" -Name "MinAnimate" -Value "0" -Force -ErrorAction SilentlyContinue
+              Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "TaskbarAnimations" -Value 0 -Force -ErrorAction SilentlyContinue
+              Write-Host "  ✓ Minimal visual effects (Max performance)" -ForegroundColor Green
+          }
+          
+          # Font smoothing (penting untuk UI Roblox Studio)
+          if ($fontSmooth) {
+              Set-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name "FontSmoothing" -Value "2" -Force -ErrorAction SilentlyContinue
+              Set-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name "FontSmoothingType" -Value 2 -Force -ErrorAction SilentlyContinue
+              Write-Host "  ✓ Font smoothing enabled (Better readability)" -ForegroundColor Green
+          }
+          
+          # === RDP OPTIMIZATION FOR 3D ===
+          Write-Host ""
+          Write-Host "🌐 Optimizing RDP for 3D rendering..." -ForegroundColor Cyan
+          
+          $rdpPath = "HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp"
+          
+          # Color depth
+          Set-ItemProperty -Path $rdpPath -Name "ColorDepth" -Value $colorDepth -Force -ErrorAction SilentlyContinue
+          
+          # Compression
+          Set-ItemProperty -Path $rdpPath -Name "fEnableCompression" -Value $compression -Force -ErrorAction SilentlyContinue
+          
+          # Desktop composition (penting untuk 3D)
+          if ($visualFX) {
+              Set-ItemProperty -Path $rdpPath -Name "fDisableThemes" -Value 0 -Force -ErrorAction SilentlyContinue
+              Set-ItemProperty -Path $rdpPath -Name "fDisableWallpaper" -Value 0 -Force -ErrorAction SilentlyContinue
+          } else {
+              Set-ItemProperty -Path $rdpPath -Name "fDisableThemes" -Value 1 -Force -ErrorAction SilentlyContinue
+              Set-ItemProperty -Path $rdpPath -Name "fDisableWallpaper" -Value 1 -Force -ErrorAction SilentlyContinue
+          }
+          
+          # Cursor settings (penting untuk precision 3D work)
+          Set-ItemProperty -Path $rdpPath -Name "fDisableCursorShadow" -Value 0 -Force -ErrorAction SilentlyContinue
+          Set-ItemProperty -Path $rdpPath -Name "fDisableCursorBlink" -Value 0 -Force -ErrorAction SilentlyContinue
+          
+          # Menu animations (disable untuk performance)
+          Set-ItemProperty -Path $rdpPath -Name "fDisableMenuAnims" -Value 1 -Force -ErrorAction SilentlyContinue
+          Set-ItemProperty -Path $rdpPath -Name "fDisableFullWindowDrag" -Value 1 -Force -ErrorAction SilentlyContinue
+          
+          Write-Host "  ✓ RDP configured for 3D workload" -ForegroundColor Green
+          
+          # === NETWORK OPTIMIZATION ===
+          Write-Host ""
+          Write-Host "🌐 Optimizing network for low latency..." -ForegroundColor Cyan
+          
+          # TCP optimization
+          netsh int tcp set global autotuninglevel=normal | Out-Null
+          netsh int tcp set global chimney=disabled | Out-Null
+          netsh int tcp set global rss=enabled | Out-Null
+          netsh int tcp set global netdma=disabled | Out-Null
+          netsh int tcp set global dca=enabled | Out-Null
+          netsh int tcp set global ecncapability=enabled | Out-Null
+          
+          # Set TCP parameters for better RDP performance
+          netsh int tcp set supplemental template=internet congestionprovider=ctcp | Out-Null
+          
+          Write-Host "  ✓ Network optimized for low latency" -ForegroundColor Green
+          
+          # === POWER PLAN ===
+          Write-Host ""
+          Write-Host "⚡ Setting high performance power plan..." -ForegroundColor Cyan
+          
+          powercfg /setactive 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c | Out-Null
+          powercfg /change monitor-timeout-ac 0 | Out-Null
+          powercfg /change disk-timeout-ac 0 | Out-Null
+          powercfg /change standby-timeout-ac 0 | Out-Null
+          
+          Write-Host "  ✓ High performance mode activated" -ForegroundColor Green
+          
+          # === REGISTRY TWEAKS ===
+          Write-Host ""
+          Write-Host "🔧 Applying registry performance tweaks..." -ForegroundColor Cyan
+          
+          # Speed up menu
+          Set-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name "MenuShowDelay" -Value "0" -Force -ErrorAction SilentlyContinue
+          
+          # Mouse precision (penting untuk 3D work)
+          Set-ItemProperty -Path "HKCU:\Control Panel\Mouse" -Name "MouseSpeed" -Value "0" -Force -ErrorAction SilentlyContinue
+          Set-ItemProperty -Path "HKCU:\Control Panel\Mouse" -Name "MouseThreshold1" -Value "0" -Force -ErrorAction SilentlyContinue
+          Set-ItemProperty -Path "HKCU:\Control Panel\Mouse" -Name "MouseThreshold2" -Value "0" -Force -ErrorAction SilentlyContinue
+          Set-ItemProperty -Path "HKCU:\Control Panel\Mouse" -Name "MouseHoverTime" -Value "100" -Force -ErrorAction SilentlyContinue
+          
+          # Keyboard response
+          Set-ItemProperty -Path "HKCU:\Control Panel\Keyboard" -Name "KeyboardDelay" -Value "0" -Force -ErrorAction SilentlyContinue
+          Set-ItemProperty -Path "HKCU:\Control Panel\Keyboard" -Name "KeyboardSpeed" -Value "31" -Force -ErrorAction SilentlyContinue
+          
+          Write-Host "  ✓ Registry tweaks applied" -ForegroundColor Green
+          
+          # === GPU OPTIMIZATION ===
+          Write-Host ""
+          Write-Host "🎨 Optimizing GPU settings..." -ForegroundColor Cyan
+          
+          # Enable hardware acceleration
+          Set-ItemProperty -Path "HKCU:\Software\Microsoft\Avalon.Graphics" -Name "DisableHWAcceleration" -Value 0 -Force -ErrorAction SilentlyContinue
+          
+          Write-Host "  ✓ Hardware acceleration enabled" -ForegroundColor Green
+          
+          # Save settings to env
+          echo "RDP_COLOR_DEPTH=$colorDepth" >> $env:GITHUB_ENV
+          echo "RDP_WIDTH=$($resolution[0])" >> $env:GITHUB_ENV
+          echo "RDP_HEIGHT=$($resolution[1])" >> $env:GITHUB_ENV
+          echo "RDP_COMPRESSION=$compression" >> $env:GITHUB_ENV
+          
+          Write-Host ""
+          Write-Host "✅ Roblox Studio optimization completed!" -ForegroundColor Green
+          Write-Host ""
+
+      # INSTALL ROBLOX STUDIO
+      - name: 🎮 INSTALL ROBLOX STUDIO
+        run: |
+          Write-Host "═══════════════════════════════════════════" -ForegroundColor Yellow
+          Write-Host "        🎮 INSTALLING ROBLOX STUDIO" -ForegroundColor Yellow
+          Write-Host "═══════════════════════════════════════════" -ForegroundColor Yellow
+          Write-Host ""
+          
+          Write-Host "📥 Downloading Roblox Studio installer..." -ForegroundColor Cyan
+          
+          $installerPath = "$env:TEMP\RobloxStudioInstaller.exe"
+          $downloadUrl = "https://setup.rbxcdn.com/RobloxStudioLauncherBeta.exe"
+          
+          try {
+              # Download with progress
+              $ProgressPreference = 'SilentlyContinue'
+              Invoke-WebRequest -Uri $downloadUrl -OutFile $installerPath -UseBasicParsing
+              $ProgressPreference = 'Continue'
+              
+              Write-Host "  ✓ Downloaded successfully!" -ForegroundColor Green
+              Write-Host ""
+              
+              Write-Host "⚙️  Installing Roblox Studio..." -ForegroundColor Cyan
+              Write-Host "  (This may take 2-3 minutes)" -ForegroundColor Yellow
+              Write-Host ""
+              
+              # Install silently
+              $process = Start-Process -FilePath $installerPath -ArgumentList "--silent" -PassThru -Wait
+              
+              # Wait for installation to complete
+              Start-Sleep -Seconds 30
+              
+              # Check if installed
+              $studioPath = "$env:LOCALAPPDATA\Roblox\Versions"
+              if (Test-Path $studioPath) {
+                  $versions = Get-ChildItem -Path $studioPath -Directory | Where-Object { $_.Name -match "version-" }
+                  if ($versions) {
+                      $latestVersion = $versions | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+                      $studioExe = Join-Path $latestVersion.FullName "RobloxStudioBeta.exe"
+                      
+                      if (Test-Path $studioExe) {
+                          Write-Host "  ✓ Roblox Studio installed successfully!" -ForegroundColor Green
+                          Write-Host "  📍 Location: $studioExe" -ForegroundColor White
+                          
+                          # Create desktop shortcut
+                          $WshShell = New-Object -ComObject WScript.Shell
+                          $Shortcut = $WshShell.CreateShortcut("C:\Users\Public\Desktop\Roblox Studio.lnk")
+                          $Shortcut.TargetPath = $studioExe
+                          $Shortcut.Save()
+                          
+                          Write-Host "  ✓ Desktop shortcut created" -ForegroundColor Green
+                          
+                          echo "ROBLOX_STUDIO_PATH=$studioExe" >> $env:GITHUB_ENV
+                      } else {
+                          Write-Host  "https://pkgs.tailscale.com/stable/tailscale-setup-latest-amd64.msi" -OutFile $msiPath
           Start-Process msiexec.exe -ArgumentList "/i", "`"$msiPath`"", "/quiet", "/norestart" -Wait
           Remove-Item $msiPath -Force -ErrorAction SilentlyContinue
           
