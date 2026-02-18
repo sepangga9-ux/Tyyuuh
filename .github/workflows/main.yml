@@ -1,10 +1,10 @@
-Name: 🚀 RDP GACOR EDITION - ULTRA LIGHT MOBILE
+Name: 🚀 RDP ULTRA LIGHT - MOBILE OPTIMIZED V2
 
 on:
   workflow_dispatch:
     inputs:
       duration:
-        description: '🕐 Pilih Durasi'
+        description: '🕐 Pilih Durasi (Pastikan sesuai limit akun)'
         required: false
         default: '5h50m'
         type: choice
@@ -16,94 +16,93 @@ on:
         - '23h20m'
 
 jobs:
-  Gacor-RDP:
+  Ultra-Light-RDP:
     runs-on: windows-latest
+    # Menaikkan timeout agar mendukung durasi 23 jam
     timeout-minutes: 1440 
     
     steps:
-      - name: 🚀 TWEAK SYSTEM GACOR (CPU & RAM)
+      - name: 🎯 KHỞI ĐỘNG HỆ THỐNG & OPTIMASI RAM
         run: |
-          Write-Host "⚡ Mengaktifkan Mode Performa Maksimal..." -ForegroundColor Cyan
-          # Set Power Plan ke High Performance
-          powercfg /setactive 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c
+          Write-Host "⚡ Meningkatkan Virtual Memory..." -ForegroundColor Yellow
+          # Mengatur PageFile agar sistem lebih stabil
+          wmic pagefileset where name="C:\\pagefile.sys" set InitialSize=4096,MaximumSize=8192
           
-          Write-Host "⚡ Optimasi Jaringan (BBR/CTCP) untuk Mobile..." -ForegroundColor Green
-          netsh int tcp set global autotuninglevel=normal
-          netsh int tcp set global congestionprovider=ctcp
-          netsh int tcp set global ecncapability=enabled
-          
-          Write-Host "🧹 Debloating Windows Services..." -ForegroundColor Yellow
-          # Matikan Windows Defender (biar enteng)
-          Set-MpPreference -DisableRealtimeMonitoring $true
-          # Matikan Telemetry & Error Reporting
-          reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\DataCollection" /v AllowTelemetry /t REG_DWORD /d 0 /f
-          reg add "HKLM\SOFTWARE\Microsoft\Windows\Windows Error Reporting" /v Disabled /t REG_DWORD /d 1 /f
+          Write-Host "📱 RDP ULTRA LIGHT - MOBILE OPTIMIZED" -ForegroundColor Cyan
+          Write-Host "🕒 Durasi Terpilih: ${{ github.event.inputs.duration }}" -ForegroundColor Magenta
 
-      - name: 🎨 OPTIMASI VISUAL EXTREME (NO LAG)
+      - name: ⚡ OPTIMASI PERFORMA EXTREME
         run: |
-          Write-Host "⚡ Menghapus semua beban grafis..." -ForegroundColor Magenta
-          $VisualPath = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects"
-          if (!(Test-Path $VisualPath)) { New-Item -Path $VisualPath -Force }
-          Set-ItemProperty -Path $VisualPath -Name "VisualFXSetting" -Value 2
+          Write-Host "│ 🎨 Mematikan semua animasi Windows..." -ForegroundColor White
+          # Gabungan tweak visual untuk menghemat bandwidth mobile
+          $registryPath = "HKCU:\Control Panel\Desktop"
+          Set-ItemProperty -Path $registryPath -Name "UserPreferencesMask" -Value ([byte[]](0x90,0x12,0x03,0x80,0x10,0x00,0x00,0x00))
+          Set-ItemProperty -Path $registryPath -Name "VisualFXSetting" -Value 2
           
-          # Matikan Wallpaper & Animasi secara permanen via Registry
-          reg add "HKCU\Control Panel\Desktop" /v Wallpaper /t REG_SZ /d "" /f
-          reg add "HKCU\Control Panel\Desktop" /v UserPreferencesMask /t REG_BINARY /d 9012038010000000 /f
+          # Matikan transparansi Taskbar & Start
           reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v EnableTransparency /t REG_DWORD /d 0 /f
-
-      - name: 👤 SETUP USER GACOR
-        run: |
-          $pass = "GacorLurr123!"
-          $sPass = ConvertTo-SecureString $pass -AsPlainText -Force
-          New-LocalUser -Name "GACOR-USER" -Password $sPass -AccountNeverExpires -Description "Optimized for Mobile"
-          Add-LocalGroupMember -Group "Administrators" -Member "GACOR-USER"
-          Add-LocalGroupMember -Group "Remote Desktop Users" -Member "GACOR-USER"
           
-          # Aktifkan RDP
-          Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -Name "fDenyTSConnections" -Value 0
-          Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -Name "UserAuthentication" -Value 0
-          echo "PASS=$pass" >> $env:GITHUB_ENV
+          Write-Host "│ 🛑 Menonaktifkan Service Berat..." -ForegroundColor White
+          $stopSvc = @("SysMain", "WSearch", "DiagTrack", "wuauserv")
+          foreach($svc in $stopSvc) { 
+            Stop-Service -Name $svc -Force -ErrorAction SilentlyContinue
+            Set-Service -Name $svc -StartupType Disabled 
+          }
 
-      - name: 🌐 KONEKSI TAILSCALE (GACOR NET)
-        env:
-          TAILSCALE_KEY: ${{ secrets.TAILSCALE_AUTH_KEY }}
+      - name: 👤 KONFIGURASI USER & RDP
         run: |
+          $password = "MobileRDP123!" # Kamu bisa ganti atau pakai generator lagi
+          $securePass = ConvertTo-SecureString $password -AsPlainText -Force
+          New-LocalUser -Name "MOBILE-RDP" -Password $securePass -AccountNeverExpires
+          Add-LocalGroupMember -Group "Administrators" -Member "MOBILE-RDP"
+          Add-LocalGroupMember -Group "Remote Desktop Users" -Member "MOBILE-RDP"
+          
+          # Aktifkan RDP & Bypass Firewall
+          Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -Name "fDenyTSConnections" -Value 0
+          Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
+          
+          echo "RDP_PASS=$password" >> $env:GITHUB_ENV
+
+      - name: 🌐 KONEKSI TAILSCALE
+        env:
+          TAILSCALE_AUTH_KEY: ${{ secrets.TAILSCALE_AUTH_KEY }}
+        run: |
+          if (-not $env:TAILSCALE_AUTH_KEY) { 
+            Write-Error "❌ Error: TAILSCALE_AUTH_KEY is missing in Secrets!"
+            exit 1 
+          }
           Invoke-WebRequest -Uri "https://pkgs.tailscale.com/stable/tailscale-setup-latest-amd64.msi" -OutFile "ts.msi"
           Start-Process msiexec.exe -ArgumentList "/i", "ts.msi", "/quiet" -Wait
-          & "C:\Program Files\Tailscale\tailscale.exe" up --authkey=$env:TAILSCALE_KEY --hostname=rdp-gacor --accept-routes
+          & "C:\Program Files\Tailscale\tailscale.exe" up --authkey=$env:TAILSCALE_AUTH_KEY --hostname=mobile-rdp
           $ip = & "C:\Program Files\Tailscale\tailscale.exe" ip -4
-          echo "IP_GACOR=$ip" >> $env:GITHUB_ENV
+          echo "TAILSCALE_IP=$ip" >> $env:GITHUB_ENV
 
-      - name: 🎉 INFO LOGIN & TIPS
+      - name: 🎉 TAMPILKAN INFO LOGIN
         run: |
-          Write-Host ""
-          Write-Host "┌────────────────────────────────────────┐" -ForegroundColor Cyan
-          Write-Host "│       🚀 RDP GACOR EDITION READY       │" -ForegroundColor Cyan
-          Write-Host "├────────────────────────────────────────┤" -ForegroundColor Cyan
-          Write-Host "│ 🌐 IP: $env:IP_GACOR" -ForegroundColor Green
-          Write-Host "│ 👤 User: GACOR-USER" -ForegroundColor White
-          Write-Host "│ 🔐 Pass: $env:PASS" -ForegroundColor White
-          Write-Host "└────────────────────────────────────────┘" -ForegroundColor Cyan
-          Write-Host "💡 TIPS BIAR MAKIN GACOR:" -ForegroundColor Yellow
-          Write-Host "1. Di HP, gunakan resolusi 800x600 agar kursor enteng."
-          Write-Host "2. Matikan fitur 'Sound' di aplikasi RDP HP."
-          Write-Host "3. Gunakan koneksi 4G/WiFi stabil."
+          Write-Host "🚀 RDP SIAP DIGUNAKAN!" -ForegroundColor Green
+          Write-Host "🌐 IP: $env:TAILSCALE_IP" -ForegroundColor Cyan
+          Write-Host "👤 User: MOBILE-RDP" -ForegroundColor White
+          Write-Host "🔐 Pass: $env:RDP_PASS" -ForegroundColor White
+          Write-Host "--------------------------------------------"
+          Write-Host "📱 Gunakan Aplikasi 'Remote Desktop' di Android/iOS"
+          Write-Host "⚙️  Set 'Color Depth' ke 16-bit di HP kamu."
 
-      - name: ⏳ KEEP-ALIVE GACOR MODE
+      - name: ⏳ KEEP ALIVE LOOP (ANTI-IDLE)
         run: |
-          $min = 350
-          if ("${{ github.event.inputs.duration }}" -eq "1h") { $min = 60 }
-          elseif ("${{ github.event.inputs.duration }}" -eq "3h") { $min = 180 }
-          elseif ("${{ github.event.inputs.duration }}" -eq "11h40m") { $min = 700 }
-          elseif ("${{ github.event.inputs.duration }}" -eq "23h20m") { $min = 1400 }
+          $durationInput = "${{ github.event.inputs.duration }}"
+          # Logika konversi durasi ke menit
+          $totalMinutes = 350
+          if ($durationInput -eq "1h") { $totalMinutes = 60 }
+          elseif ($durationInput -eq "3h") { $totalMinutes = 180 }
+          elseif ($durationInput -eq "11h40m") { $totalMinutes = 700 }
+          elseif ($durationInput -eq "23h20m") { $totalMinutes = 1400 }
 
-          $end = (Get-Date).AddMinutes($min)
-          while ((Get-Date) -lt $end) {
-              $left = $end - (Get-Date)
-              # Pantau status service RDP agar tidak mati
-              $svc = Get-Service TermService
-              if ($svc.Status -ne 'Running') { Start-Service TermService }
-              
-              Write-Host "`r[GACOR MODE] Sisa waktu: $($left.Hours)j $($left.Minutes)m. Status: STABIL" -NoNewline -ForegroundColor Cyan
-              Start-Sleep -Seconds 60
+          $stopTime = (Get-Date).AddMinutes($totalMinutes)
+          
+          while ((Get-Date) -lt $stopTime) {
+            $rem = $stopTime - (Get-Date)
+            Write-Host "`rSisa Waktu: $($rem.Hours)h $($rem.Minutes)m - Server Aktif..." -NoNewline -ForegroundColor Cyan
+            # Ping ke google agar session tidak idle
+            Test-Connection google.com -Count 1 > $null
+            Start-Sleep -Seconds 60
           }
