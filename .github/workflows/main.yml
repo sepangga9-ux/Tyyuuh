@@ -58,7 +58,6 @@ jobs:
           Write-Host "           📊 SYSTEM RESOURCES" -ForegroundColor Yellow
           Write-Host "═══════════════════════════════════════════" -ForegroundColor Yellow
           
-          # RAM Info
           $os = Get-WmiObject Win32_OperatingSystem
           $totalRAM = [math]::Round($os.TotalVisibleMemorySize/1MB, 2)
           $freeRAM = [math]::Round($os.FreePhysicalMemory/1MB, 2)
@@ -69,7 +68,6 @@ jobs:
           Write-Host "   Free: $freeRAM GB" -ForegroundColor Green
           Write-Host "   Used: $usedRAM GB" -ForegroundColor Yellow
           
-          # CPU Info
           $cpu = Get-WmiObject Win32_Processor
           Write-Host ""
           Write-Host "⚙️  CPU:" -ForegroundColor Cyan
@@ -77,7 +75,6 @@ jobs:
           Write-Host "   Cores: $($cpu.NumberOfCores)" -ForegroundColor White
           Write-Host "   Threads: $($cpu.NumberOfLogicalProcessors)" -ForegroundColor White
           
-          # Disk Info
           $disk = Get-PSDrive C
           $freeDisk = [math]::Round($disk.Free/1GB, 2)
           $usedDisk = [math]::Round($disk.Used/1GB, 2)
@@ -89,7 +86,6 @@ jobs:
           Write-Host "   Free: $freeDisk GB" -ForegroundColor Green
           Write-Host "   Used: $usedDisk GB" -ForegroundColor Yellow
           
-          # GPU Info
           $gpu = Get-WmiObject Win32_VideoController
           Write-Host ""
           Write-Host "🎨 Graphics:" -ForegroundColor Cyan
@@ -105,7 +101,6 @@ jobs:
           Write-Host "═══════════════════════════════════════════" -ForegroundColor Yellow
           Write-Host ""
           
-          # Stop unnecessary processes
           Write-Host "⏹️  Stopping unnecessary processes..." -ForegroundColor Cyan
           $processesToStop = @(
               'OneDrive', 'Teams', 'Skype', 'msedge', 
@@ -115,24 +110,12 @@ jobs:
               Get-Process -Name $proc -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
           }
           
-          # Disable services
           Write-Host "🛑 Disabling unnecessary services..." -ForegroundColor Cyan
           $servicesToDisable = @(
-              'WSearch',           # Windows Search
-              'SysMain',           # Superfetch
-              'DiagTrack',         # Diagnostics
-              'TabletInputService', # Touch
-              'Themes',            # Themes
-              'WbioSrvc',          # Biometric
-              'fhsvc',             # File History
-              'MapsBroker',        # Downloaded Maps
-              'lfsvc',             # Geolocation
-              'RetailDemo',        # Retail Demo
-              'WMPNetworkSvc',     # Windows Media Player
-              'XblAuthManager',    # Xbox Live Auth
-              'XblGameSave',       # Xbox Live Game Save
-              'XboxNetApiSvc',     # Xbox Live Networking
-              'XboxGipSvc'         # Xbox Accessory
+              'WSearch', 'SysMain', 'DiagTrack', 'TabletInputService', 
+              'Themes', 'WbioSrvc', 'fhsvc', 'MapsBroker', 'lfsvc', 
+              'RetailDemo', 'WMPNetworkSvc', 'XblAuthManager', 
+              'XblGameSave', 'XboxNetApiSvc', 'XboxGipSvc'
           )
           
           foreach($svc in $servicesToDisable) {
@@ -145,7 +128,6 @@ jobs:
               }
           }
           
-          # Clean temp files
           Write-Host ""
           Write-Host "🗑️  Cleaning temporary files..." -ForegroundColor Cyan
           
@@ -172,7 +154,6 @@ jobs:
           
           Write-Host "  ✓ Freed: $([math]::Round($freedSpace/1MB, 2)) MB" -ForegroundColor Green
           
-          # Clear event logs
           Write-Host ""
           Write-Host "📝 Clearing event logs..." -ForegroundColor Cyan
           wevtutil el | ForEach-Object { wevtutil cl $_ 2>$null }
@@ -192,26 +173,25 @@ jobs:
           
           $perfMode = "${{ github.event.inputs.performance_mode }}"
           
-          # Set performance variables
           switch ($perfMode) {
               'ultra-performance' {
-                  $colorDepth = 4      # 32-bit
+                  $colorDepth = 4
                   $resolution = @(1920, 1080)
-                  $compression = 0     # No compression
+                  $compression = 0
                   $visualFX = $true
                   $fontSmooth = $true
                   Write-Host "🚀 Mode: ULTRA PERFORMANCE (Best Quality)" -ForegroundColor Magenta
               }
               'balanced' {
-                  $colorDepth = 3      # 24-bit
+                  $colorDepth = 3
                   $resolution = @(1600, 900)
                   $compression = 1
                   $visualFX = $false
                   $fontSmooth = $true
                   Write-Host "⚖️  Mode: BALANCED (Quality + Speed)" -ForegroundColor Yellow
               }
-              default { # roblox-optimized
-                  $colorDepth = 3      # 24-bit (lebih baik untuk 3D)
+              default {
+                  $colorDepth = 3
                   $resolution = @(1366, 768)
                   $compression = 1
                   $visualFX = $false
@@ -225,12 +205,186 @@ jobs:
           Write-Host "   Compression: $(if($compression){'ON'}else{'OFF'})" -ForegroundColor Cyan
           Write-Host ""
           
-          # === VISUAL EFFECTS FOR 3D WORK ===
           Write-Host "🎨 Configuring visual effects for 3D work..." -ForegroundColor Cyan
           
           if ($visualFX) {
-              # Enable visual effects for better 3D visualization
               Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name "EnableTransparency" -Value 1 -Force -ErrorAction SilentlyContinue
+              Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects" -Name "VisualFXSetting" -Value 1 -Force -ErrorAction SilentlyContinue
+              Write-Host "  ✓ Visual effects enabled (Better for 3D)" -ForegroundColor Green
+          } else {
+              Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name "EnableTransparency" -Value 0 -Force -ErrorAction SilentlyContinue
+              Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects" -Name "VisualFXSetting" -Value 2 -Force -ErrorAction SilentlyContinue
+              Set-ItemProperty -Path "HKCU:\Control Panel\Desktop\WindowMetrics" -Name "MinAnimate" -Value "0" -Force -ErrorAction SilentlyContinue
+              Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "TaskbarAnimations" -Value 0 -Force -ErrorAction SilentlyContinue
+              Write-Host "  ✓ Minimal visual effects (Max performance)" -ForegroundColor Green
+          }
+          
+          if ($fontSmooth) {
+              Set-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name "FontSmoothing" -Value "2" -Force -ErrorAction SilentlyContinue
+              Set-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name "FontSmoothingType" -Value 2 -Force -ErrorAction SilentlyContinue
+              Write-Host "  ✓ Font smoothing enabled (Better readability)" -ForegroundColor Green
+          }
+          
+          Write-Host ""
+          Write-Host "🌐 Optimizing RDP for 3D rendering..." -ForegroundColor Cyan
+          
+          $rdpPath = "HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp"
+          
+          Set-ItemProperty -Path $rdpPath -Name "ColorDepth" -Value $colorDepth -Force -ErrorAction SilentlyContinue
+          Set-ItemProperty -Path $rdpPath -Name "fEnableCompression" -Value $compression -Force -ErrorAction SilentlyContinue
+          
+          if ($visualFX) {
+              Set-ItemProperty -Path $rdpPath -Name "fDisableThemes" -Value 0 -Force -ErrorAction SilentlyContinue
+              Set-ItemProperty -Path $rdpPath -Name "fDisableWallpaper" -Value 0 -Force -ErrorAction SilentlyContinue
+          } else {
+              Set-ItemProperty -Path $rdpPath -Name "fDisableThemes" -Value 1 -Force -ErrorAction SilentlyContinue
+              Set-ItemProperty -Path $rdpPath -Name "fDisableWallpaper" -Value 1 -Force -ErrorAction SilentlyContinue
+          }
+          
+          Set-ItemProperty -Path $rdpPath -Name "fDisableCursorShadow" -Value 0 -Force -ErrorAction SilentlyContinue
+          Set-ItemProperty -Path $rdpPath -Name "fDisableCursorBlink" -Value 0 -Force -ErrorAction SilentlyContinue
+          Set-ItemProperty -Path $rdpPath -Name "fDisableMenuAnims" -Value 1 -Force -ErrorAction SilentlyContinue
+          Set-ItemProperty -Path $rdpPath -Name "fDisableFullWindowDrag" -Value 1 -Force -ErrorAction SilentlyContinue
+          
+          Write-Host "  ✓ RDP configured for 3D workload" -ForegroundColor Green
+          
+          Write-Host ""
+          Write-Host "🌐 Optimizing network for low latency..." -ForegroundColor Cyan
+          
+          netsh int tcp set global autotuninglevel=normal | Out-Null
+          netsh int tcp set global chimney=disabled | Out-Null
+          netsh int tcp set global rss=enabled | Out-Null
+          netsh int tcp set global netdma=disabled | Out-Null
+          netsh int tcp set global dca=enabled | Out-Null
+          netsh int tcp set global ecncapability=enabled | Out-Null
+          netsh int tcp set supplemental template=internet congestionprovider=ctcp | Out-Null
+          
+          Write-Host "  ✓ Network optimized for low latency" -ForegroundColor Green
+          
+          Write-Host ""
+          Write-Host "⚡ Setting high performance power plan..." -ForegroundColor Cyan
+          
+          powercfg /setactive 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c | Out-Null
+          powercfg /change monitor-timeout-ac 0 | Out-Null
+          powercfg /change disk-timeout-ac 0 | Out-Null
+          powercfg /change standby-timeout-ac 0 | Out-Null
+          
+          Write-Host "  ✓ High performance mode activated" -ForegroundColor Green
+          
+          Write-Host ""
+          Write-Host "🔧 Applying registry performance tweaks..." -ForegroundColor Cyan
+          
+          Set-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name "MenuShowDelay" -Value "0" -Force -ErrorAction SilentlyContinue
+          Set-ItemProperty -Path "HKCU:\Control Panel\Mouse" -Name "MouseSpeed" -Value "0" -Force -ErrorAction SilentlyContinue
+          Set-ItemProperty -Path "HKCU:\Control Panel\Mouse" -Name "MouseThreshold1" -Value "0" -Force -ErrorAction SilentlyContinue
+          Set-ItemProperty -Path "HKCU:\Control Panel\Mouse" -Name "MouseThreshold2" -Value "0" -Force -ErrorAction SilentlyContinue
+          Set-ItemProperty -Path "HKCU:\Control Panel\Mouse" -Name "MouseHoverTime" -Value "100" -Force -ErrorAction SilentlyContinue
+          Set-ItemProperty -Path "HKCU:\Control Panel\Keyboard" -Name "KeyboardDelay" -Value "0" -Force -ErrorAction SilentlyContinue
+          Set-ItemProperty -Path "HKCU:\Control Panel\Keyboard" -Name "KeyboardSpeed" -Value "31" -Force -ErrorAction SilentlyContinue
+          
+          Write-Host "  ✓ Registry tweaks applied" -ForegroundColor Green
+          
+          Write-Host ""
+          Write-Host "🎨 Optimizing GPU settings..." -ForegroundColor Cyan
+          
+          Set-ItemProperty -Path "HKCU:\Software\Microsoft\Avalon.Graphics" -Name "DisableHWAcceleration" -Value 0 -Force -ErrorAction SilentlyContinue
+          
+          Write-Host "  ✓ Hardware acceleration enabled" -ForegroundColor Green
+          
+          echo "RDP_COLOR_DEPTH=$colorDepth" >> $env:GITHUB_ENV
+          echo "RDP_WIDTH=$($resolution[0])" >> $env:GITHUB_ENV
+          echo "RDP_HEIGHT=$($resolution[1])" >> $env:GITHUB_ENV
+          echo "RDP_COMPRESSION=$compression" >> $env:GITHUB_ENV
+          
+          Write-Host ""
+          Write-Host "✅ Roblox Studio optimization completed!" -ForegroundColor Green
+          Write-Host ""
+
+      # INSTALL ROBLOX STUDIO - FIXED
+      - name: 🎮 INSTALL ROBLOX STUDIO
+        run: |
+          Write-Host "═══════════════════════════════════════════" -ForegroundColor Yellow
+          Write-Host "        🎮 INSTALLING ROBLOX STUDIO" -ForegroundColor Yellow
+          Write-Host "═══════════════════════════════════════════" -ForegroundColor Yellow
+          Write-Host ""
+          
+          Write-Host "📥 Downloading Roblox Studio installer..." -ForegroundColor Cyan
+          
+          $installerPath = "$env:TEMP\RobloxStudioInstaller.exe"
+          $downloadUrl = "https://setup.rbxcdn.com/RobloxStudioLauncherBeta.exe"
+          
+          try {
+              $ProgressPreference = 'SilentlyContinue'
+              Invoke-WebRequest -Uri $downloadUrl -OutFile $installerPath -UseBasicParsing
+              $ProgressPreference = 'Continue'
+              
+              Write-Host "  ✓ Downloaded successfully!" -ForegroundColor Green
+              Write-Host ""
+              
+              Write-Host "⚙️  Installing Roblox Studio..." -ForegroundColor Cyan
+              Write-Host "  (This may take 2-3 minutes)" -ForegroundColor Yellow
+              Write-Host ""
+              
+              $process = Start-Process -FilePath $installerPath -ArgumentList "--silent" -PassThru -Wait
+              
+              Start-Sleep -Seconds 30
+              
+              $studioPath = "$env:LOCALAPPDATA\Roblox\Versions"
+              if (Test-Path $studioPath) {
+                  $versions = Get-ChildItem -Path $studioPath -Directory | Where-Object { $_.Name -match "version-" }
+                  if ($versions) {
+                      $latestVersion = $versions | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+                      $studioExe = Join-Path $latestVersion.FullName "RobloxStudioBeta.exe"
+                      
+                      if (Test-Path $studioExe) {
+                          Write-Host "  ✓ Roblox Studio installed successfully!" -ForegroundColor Green
+                          Write-Host "  📍 Location: $studioExe" -ForegroundColor White
+                          
+                          $WshShell = New-Object -ComObject WScript.Shell
+                          $Shortcut = $WshShell.CreateShortcut("C:\Users\Public\Desktop\Roblox Studio.lnk")
+                          $Shortcut.TargetPath = $studioExe
+                          $Shortcut.Save()
+                          
+                          Write-Host "  ✓ Desktop shortcut created" -ForegroundColor Green
+                          
+                          echo "ROBLOX_STUDIO_PATH=$studioExe" >> $env:GITHUB_ENV
+                      } else {
+                          Write-Host "  ⚠️  Installation completed but executable not found" -ForegroundColor Yellow
+                          Write-Host "  You can download it manually from: https://www.roblox.com/create" -ForegroundColor Cyan
+                      }
+                  }
+              } else {
+                  Write-Host "  ⚠️  Installation path not found" -ForegroundColor Yellow
+                  Write-Host "  You can download it manually from: https://www.roblox.com/create" -ForegroundColor Cyan
+              }
+              
+              Remove-Item $installerPath -Force -ErrorAction SilentlyContinue
+              
+          } catch {
+              Write-Host "  ⚠️  Auto-install failed: $($_.Exception.Message)" -ForegroundColor Yellow
+              Write-Host ""
+              Write-Host "  📝 Manual install instructions:" -ForegroundColor Cyan
+              Write-Host "     1. Open browser in RDP" -ForegroundColor White
+              Write-Host "     2. Go to: https://www.roblox.com/create" -ForegroundColor White
+              Write-Host "     3. Click 'Start Creating' to download Studio" -ForegroundColor White
+              Write-Host "     4. Run the installer" -ForegroundColor White
+          }
+          
+          Write-Host ""
+
+      # INSTALL USEFUL TOOLS
+      - name: 🛠️ INSTALL USEFUL TOOLS
+        run: |
+          Write-Host "═══════════════════════════════════════════" -ForegroundColor Yellow
+          Write-Host "          🛠️  INSTALLING TOOLS" -ForegroundColor Yellow
+          Write-Host "═══════════════════════════════════════════" -ForegroundColor Yellow
+          Write-Host ""
+          
+          Write-Host "📦 Installing Chocolatey..." -ForegroundColor Cyan
+          Set-ExecutionPolicy Bypass -Scope Process -Force
+          [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
+          try {
+              Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocoleTransparency" -Value 1 -Force -ErrorAction SilentlyContinue
               Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects" -Name "VisualFXSetting" -Value 1 -Force -ErrorAction SilentlyContinue
               Write-Host "  ✓ Visual effects enabled (Better for 3D)" -ForegroundColor Green
           } else {
